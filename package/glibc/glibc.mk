@@ -7,6 +7,12 @@
 ifeq ($(BR2_csky),y)
 GLIBC_VERSION = 7630ed2fa60caea98f500e4a7a51b88f9bf1e176
 GLIBC_SITE = $(call github,c-sky,glibc,$(GLIBC_VERSION))
+else ifeq ($(BR2_riscv)$(BR2_TOOLCHAIN_CHERI_GLIBC),yy)
+# Use the same version of glibc as the base version of the cherified glibc.
+# Additional patches required for RISC-V have been cherry-picked.
+GLIBC_VERSION = 2.27-159-g7a83767f8cfc1b793defe62368f5b5416dcb0811
+GLIBC_SITE = https://github.com/cheri-linux/glibc.git
+GLIBC_SITE_METHOD = git
 else
 # Generate version string using:
 #   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master | cut -d '-' -f 2-
