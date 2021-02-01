@@ -324,6 +324,10 @@ define TOOLCHAIN_CMAKE_INSTALL_CLANG_FILES
 		> $(HOST_DIR)/share/buildroot/toolchainfile-clang.cmake
 endef
 
-TOOLCHAIN_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_CMAKE_INSTALL_CLANG_FILES
+# Workaround to install the cmake toolchain files for compiler-rt. They are
+# normally installed once the toolchain has been built, but since compiler-rt is
+# a part of the toolchain, they are required before then.
+COMPILER_RT_PRE_CONFIGURE_HOOKS += TOOLCHAIN_CMAKE_INSTALL_FILES
+COMPILER_RT_PRE_CONFIGURE_HOOKS += TOOLCHAIN_CMAKE_INSTALL_CLANG_FILES
 
 endif
