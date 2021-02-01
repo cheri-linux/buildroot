@@ -385,6 +385,4 @@ $(error No BusyBox configuration file specified, check your BR2_PACKAGE_BUSYBOX_
 endif
 endif
 
-BUSYBOX_CHERI_DEPENDENCIES += host-llvm-project musl-cheri
-
 $(eval $(kconfig-package))

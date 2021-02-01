@@ -9,7 +9,7 @@ LIBOPENSSL_CHERI_SITE = https://github.com/cheri-linux/openssl.git
 LIBOPENSSL_CHERI_SITE_METHOD = git
 
 LIBOPENSSL_CHERI_INSTALL_STAGING = YES
-LIBOPENSSL_CHERI_DEPENDENCIES = musl-cheri host-llvm-project zlib
+LIBOPENSSL_CHERI_DEPENDENCIES = zlib
 # no-asm is needed with generic architectures such as linux-generic32, see
 # https://github.com/openssl/openssl/issues/9839
 LIBOPENSSL_CHERI_TARGET_ARCH = linux-generic64 no-asm

@@ -11,8 +11,6 @@ LIBZLIB_CHERI_LICENSE = Zlib
 LIBZLIB_CHERI_LICENSE_FILES = README
 LIBZLIB_CHERI_INSTALL_STAGING = YES
 
-LIBZLIB_CHERI_DEPENDENCIES = host-llvm-project musl-cheri
-
 # It is not possible to build only a shared version of zlib, so we build both
 # shared and static, unless we only want the static libs, and we eventually
 # selectively remove what we do not want

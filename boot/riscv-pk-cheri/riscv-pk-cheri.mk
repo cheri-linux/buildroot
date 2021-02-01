@@ -8,7 +8,6 @@ RISCV_PK_CHERI_VERSION = riscv-cheri-20220623
 RISCV_PK_CHERI_SITE = https://github.com/cheri-linux/riscv-pk.git
 RISCV_PK_CHERI_SITE_METHOD = git
 
-RISCV_PK_CHERI_DEPENDENCIES = host-llvm-project musl-cheri
 RISCV_PK_CHERI_INSTALL_IMAGES = YES
 
 ifeq ($(BR2_TARGET_RISCV_PK_CHERI_QEMU),y)

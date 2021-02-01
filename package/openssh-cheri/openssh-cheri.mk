@@ -33,7 +33,7 @@ ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 OPENSSH_CHERI_CONF_OPTS += --without-pie
 endif
 
-OPENSSH_CHERI_DEPENDENCIES = host-llvm-project musl-cheri host-pkgconf libzlib-cheri libopenssl-cheri
+OPENSSH_CHERI_DEPENDENCIES = host-pkgconf libzlib-cheri libopenssl-cheri
 
 ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
 OPENSSH_CHERI_DEPENDENCIES += cryptodev-linux
