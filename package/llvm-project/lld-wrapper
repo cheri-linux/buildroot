@@ -24,14 +24,14 @@ TARGET_ARCH=${TARGET_CROSS%%-*}
 cc=$HOST_DIR/cheri/bin/clang
 LINKER=$($cc -print-prog-name=ld.lld)
 
+ldso=@@CHERI_LDSO@@
+
 case "$TARGET_ARCH" in
 riscv64)
 	ARCH=riscv64
-	ldso="/lib/ld-musl-riscv64-clang.so.1"
 	;;
 riscv64cheri)
 	ARCH=riscv64
-	ldso="/lib/ld-musl-riscv64cheri-clang.so.1"
 	;;
 *)
         echo "Unknown architecture"

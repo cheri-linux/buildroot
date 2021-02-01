@@ -16,7 +16,7 @@ COMPILER_RT_DL_SUBDIR = llvm-project
 COMPILER_RT_SUBDIR = compiler-rt
 COMPILER_RT_CLANG = YES
 
-COMPILER_RT_DEPENDENCIES = host-llvm-project musl-cheri-headers
+COMPILER_RT_DEPENDENCIES = host-llvm-project $(CHERI_LIBC)-headers
 
 # compiler-rt is part of the toolchain so disable the toolchain dependency
 COMPILER_RT_ADD_TOOLCHAIN_DEPENDENCY = NO

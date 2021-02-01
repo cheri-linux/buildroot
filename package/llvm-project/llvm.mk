@@ -291,10 +291,15 @@ HOST_LLVM_PROJECT_POST_INSTALL_HOOKS = HOST_LLVM_PROJECT_COPY_LLVM_CONFIG_TO_STA
 #$(GNU_TARGET_NAME)
 
 define HOST_LLVM_PROJECT_INSTALL_WRAPPER_AND_SYMLINKS
-	ln -sfr $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/clang-wrapper $(TARGET_CC_CLANG); \
-	ln -sfr $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/clang-wrapper $(TARGET_CXX_CLANG); \
-	ln -sfr $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/clang-wrapper $(TARGET_CPP_CLANG); \
-	ln -sfr $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/lld-wrapper $(TARGET_LD_CLANG); \
+	sed -e 's#@@CHERI_LDSO@@#$(CHERI_LDSO)#' $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/lld-wrapper \
+	> $(HOST_DIR)/cheri/bin/lld-wrapper
+	chmod 0755 $(HOST_DIR)/cheri/bin/lld-wrapper
+	$(Q)$(INSTALL) -D $(TOPDIR)/$(HOST_LLVM_PROJECT_PKGDIR)/clang-wrapper \
+		$(HOST_DIR)/cheri/bin/clang-wrapper
+	ln -sfr $(HOST_DIR)/cheri/bin/clang-wrapper $(TARGET_CC_CLANG); \
+	ln -sfr $(HOST_DIR)/cheri/bin/clang-wrapper $(TARGET_CXX_CLANG); \
+	ln -sfr $(HOST_DIR)/cheri/bin/clang-wrapper $(TARGET_CPP_CLANG); \
+	ln -sfr $(HOST_DIR)/cheri/bin/lld-wrapper $(TARGET_LD_CLANG); \
 	cd $(HOST_DIR)/cheri/bin; \
 	for i in llvm-*; do \
 		case "$$i" in \

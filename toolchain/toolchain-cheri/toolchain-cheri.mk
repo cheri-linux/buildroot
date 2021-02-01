@@ -6,6 +6,12 @@
 
 CHERI_LIBC = $(call qstrip,$(BR2_TOOLCHAIN_CHERI_LIBC))
 
+ifeq ($(BR2_RISCV_64),y)
+ifeq ($(CHERI_LIBC),musl-cheri)
+CHERI_LDSO = /lib/ld-musl-$(TARGET_ARCH_CLANG)-clang.so.1
+endif
+endif
+
 # Trigger build of all relevant packages
 TOOLCHAIN_CHERI_DEPENDENCIES = $(CHERI_LIBC)
 
