@@ -137,6 +137,7 @@ config BR2_RISCV_CHERI
 	bool "Cheri Instructions (C)"
 	depends on BR2_ARCH_IS_64
 	select BR2_RISCV_ISA_CHERI
+	select BR2_TOOLCHAIN_CHERI
 
 # vim: ft=kconfig
 # -*- mode:kconfig; -*-

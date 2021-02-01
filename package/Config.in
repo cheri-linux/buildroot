@@ -1,8 +1,6 @@
 menu "Target packages"
 
 	source "package/busybox/Config.in"
-	source "package/musl-cheri-headers/Config.in"
-	source "package/musl-cheri/Config.in"
 	source "package/busybox-cheri/Config.in"
 	source "package/skeleton/Config.in"
 	source "package/skeleton-custom/Config.in"

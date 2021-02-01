@@ -18,6 +18,9 @@ COMPILER_RT_CLANG = YES
 
 COMPILER_RT_DEPENDENCIES = host-llvm-project musl-cheri-headers
 
+# compiler-rt is part of the toolchain so disable the toolchain dependency
+COMPILER_RT_ADD_TOOLCHAIN_DEPENDENCY = NO
+
 COMPILER_RT_CONF_OPTS += -DCMAKE_BUILD_TYPE=Release
 
 COMPILER_RT_CONF_OPTS += \

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_MUSL_CHERI
-	bool "MUSL CHERI"
-	default n
-	#depends on BR2_TOOLCHAIN_USES_MUSL
+	bool
+	default y
+	depends on BR2_TOOLCHAIN_CHERI_MUSL
 	select BR2_PACKAGE_LINUX_HEADERS
 	select BR2_PACKAGE_COMPILER_RT
 	# SSP broken on i386/ppc: http://www.openwall.com/lists/musl/2016/12/04/2

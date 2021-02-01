@@ -62,6 +62,9 @@ endchoice
 source "toolchain/toolchain-buildroot/Config.in"
 source "toolchain/toolchain-external/Config.in"
 
+# CHERI Toolchain
+source "toolchain/toolchain-cheri/Config.in"
+
 # Generic toolchain options
 
 # we want gdb config in the middle of both source and external

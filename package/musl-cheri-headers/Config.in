@@ -1,5 +1,6 @@
 config BR2_PACKAGE_MUSL_CHERI_HEADERS
-	bool "MUSL CHERI HEADERS"
-	default n
+	bool
+	default y
+	depends on BR2_TOOLCHAIN_CHERI_MUSL
 	help
 	  https://www.musl-libc.org/

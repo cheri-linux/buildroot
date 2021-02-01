@@ -1,0 +1,31 @@
+comment "CHERI Toolchain"
+
+config BR2_TOOLCHAIN_CHERI
+    bool "Build CHERI Toolchain"
+
+if BR2_TOOLCHAIN_CHERI
+
+choice
+    prompt "Cherified C library"
+    default BR2_TOOLCHAIN_CHERI_MUSL
+
+config BR2_TOOLCHAIN_CHERI_MUSL
+    bool "musl"
+    depends on BR2_RISCV_64
+    depends on BR2_USE_MMU
+    help
+      This option selects musl as the cherified C library for the
+      cross-compilation CHERI toolchain.
+
+      https://www.musl-libc.org/
+
+endchoice
+
+config BR2_TOOLCHAIN_CHERI_LIBC
+    string
+    default "musl-cheri" if BR2_TOOLCHAIN_CHERI_MUSL
+
+endif # BR2_TOOLCHAIN_CHERI
+
+source "package/musl-cheri/Config.in"
+source "package/musl-cheri-headers/Config.in"
