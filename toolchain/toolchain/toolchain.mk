@@ -43,9 +43,14 @@ endif
 
 # Install default nsswitch.conf file if the skeleton doesn't provide it
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+ifeq ($(BR2_TOOLCHAIN_CHERI_GLIBC),y)
+GLIBC_PKG_DIR = glibc-cheri
+else
+GLIBC_PKG_DIR = glibc
+endif
 define GLIBC_COPY_NSSWITCH_FILE
 	@if [ ! -f "$(TARGET_DIR)/etc/nsswitch.conf" ]; then \
-		$(INSTALL) -D -m 0644 package/glibc/nsswitch.conf $(TARGET_DIR)/etc/nsswitch.conf ; \
+		$(INSTALL) -D -m 0644 package/$(GLIBC_PKG_DIR)/nsswitch.conf $(TARGET_DIR)/etc/nsswitch.conf ; \
 	fi
 endef
 TOOLCHAIN_POST_INSTALL_TARGET_HOOKS += GLIBC_COPY_NSSWITCH_FILE

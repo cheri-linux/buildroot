@@ -25,6 +25,7 @@ cc=$HOST_DIR/cheri/bin/clang
 LINKER=$($cc -print-prog-name=ld.lld)
 
 ldso=@@CHERI_LDSO@@
+libc=@@CHERI_LIBC@@
 
 case "$TARGET_ARCH" in
 riscv64)
@@ -78,7 +79,19 @@ for x ; do
 		#set -- "$@" $($cc -print-file-name=$file)
 		skip=1
 		;;
-	-lm|-lresolv|-latomic|-Bstatic)
+	-latomic)
+		msg "OPTION REMOVED: $x"
+		skip=1
+		;;
+	-lm|-lresolv)
+		if [ "$libc" = "musl-cheri" ]; then
+			msg "OPTION REMOVED: $x"
+			skip=1
+		else
+			msg "OPTION PRESENT: $x"
+		fi
+		;;
+	-Bstatic)
 		msg "OPTION REMOVED: $x"
 		skip=1
 		;;

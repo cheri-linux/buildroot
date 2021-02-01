@@ -19,13 +19,29 @@ config BR2_TOOLCHAIN_CHERI_MUSL
 
       https://www.musl-libc.org/
 
+config BR2_TOOLCHAIN_CHERI_GLIBC
+    bool "glibc"
+    depends on BR2_RISCV_64
+    depends on BR2_RISCV_ISA_RVA
+    depends on BR2_USE_MMU
+    depends on !BR2_STATIC_LIBS
+    depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
+    help
+      This option selects the cherified glibc as the C library for the
+      cross-compilation CHERI toolchain.
+
+      http://www.gnu.org/software/libc/
+
 endchoice
 
 config BR2_TOOLCHAIN_CHERI_LIBC
     string
     default "musl-cheri" if BR2_TOOLCHAIN_CHERI_MUSL
+    default "glibc-cheri" if BR2_TOOLCHAIN_CHERI_GLIBC
 
 endif # BR2_TOOLCHAIN_CHERI
 
 source "package/musl-cheri/Config.in"
 source "package/musl-cheri-headers/Config.in"
+source "package/glibc-cheri/Config.in"
+source "package/glibc-cheri-headers/Config.in"
