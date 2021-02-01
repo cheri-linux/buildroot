@@ -37,6 +37,8 @@ COMPILER_RT_CONF_OPTS += \
 
 define COMPILER_RT_POST_INSTALL_HOOK
 	ln -sfr $(STAGING_DIR)/cheri/lib/linux/libclang_rt.builtins-$(ARCH).a $(STAGING_DIR)/cheri/lib/libclang_rt.builtins-$(ARCH).a
+	ln -sfr $(STAGING_DIR)/cheri/lib/linux/clang_rt.crtbegin-$(ARCH).o $(STAGING_DIR)/cheri/lib/clang_rt.crtbegin-$(ARCH).o
+	ln -sfr $(STAGING_DIR)/cheri/lib/linux/clang_rt.crtend-$(ARCH).o $(STAGING_DIR)/cheri/lib/clang_rt.crtend-$(ARCH).o
 endef
 
 COMPILER_RT_POST_INSTALL_STAGING_HOOKS += COMPILER_RT_POST_INSTALL_HOOK
