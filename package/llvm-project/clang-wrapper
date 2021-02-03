@@ -19,9 +19,9 @@ msg() {
 #HOST_DIR=/pub/kds/work/cheri/buildroot/mips64/host
 
 TARGET_CC=${0##*/}
-TARGET_TOOL=${TARGET_CC##*-}
+TARGET_TOOL=clang${TARGET_CC##*-clang}
 TARGET_ARCH=${TARGET_CC%%-*}
-TARGET_CROSS=${TARGET_CC%-*}
+TARGET_CROSS=${TARGET_CC%-clang*}
 
 #echo $TARGET_ARCH $TARGET_CROSS $TARGET_TOOL
 #exit 0
