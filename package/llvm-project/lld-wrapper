@@ -61,7 +61,12 @@ for x ; do
 		skip=1
 		;;
 	Scrt*.o|crt*.o|-lc)
-		msg "OPTION PRESENT: $x"
+		if [ "${x##*.}" = "o" -a ! -f "$STAGING_DIR/cheri/lib/$x" ]; then
+			msg "OPTION REMOVED: $x"
+			skip=1
+		else
+			msg "OPTION PRESENT: $x"
+		fi
 		;;
 	-lgcc)
 		msg "OPTION REPLACED: $x"
