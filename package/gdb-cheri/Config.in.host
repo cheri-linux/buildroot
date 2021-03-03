@@ -1,5 +1,3 @@
-comment "Host CHERI GDB"
-
 config BR2_PACKAGE_HOST_GDB_CHERI_ARCH_SUPPORTS
 	bool
 	default y
@@ -14,7 +12,7 @@ comment "Host CHERI GDB Options"
 	depends on BR2_PACKAGE_HOST_GDB_CHERI_ARCH_SUPPORTS
 
 config BR2_PACKAGE_HOST_GDB_CHERI
-	bool "Build cross cheri gdb for the host"
+	bool "Build cross gdb for the host"
 	# When the external toolchain gdbserver is used, we shouldn't
 	# allow to build a cross-gdb, as the one of the external
 	# toolchain should be used.
@@ -23,7 +21,7 @@ config BR2_PACKAGE_HOST_GDB_CHERI
 	help
 	  Build a cross gdb that runs on the host machine and debugs
 	  programs running on the target. It requires 'gdbserver'
-	  installed on the target, see BR2_PACKAGE_GDB_SERVER to
+	  installed on the target, see BR2_PACKAGE_GDB_CHERI_SERVER to
 	  enable it.
 
 if BR2_PACKAGE_HOST_GDB_CHERI
@@ -33,10 +31,28 @@ config BR2_PACKAGE_HOST_GDB_CHERI_TUI
 	help
 	  This option enables terminal user interface (TUI) for gdb
 
-config BR2_PACKAGE_HOST_GDB_CHERI_PYTHON
-	bool "Python support"
+choice
+	prompt "Python support"
+	default BR2_PACKAGE_HOST_GDB_CHERI_NOPYTHON
 	help
-	  This option enables the Python support in the cross gdb.
+	  Select the version of Python you wish to use
+
+config BR2_PACKAGE_HOST_GDB_CHERI_NOPYTHON
+	bool "None"
+	help
+	  This option disables Python support in the cross gdb.
+
+config BR2_PACKAGE_HOST_GDB_CHERI_PYTHON
+	bool "Python 2"
+	help
+	  This option enables the Python 2 support in the cross gdb.
+
+config BR2_PACKAGE_HOST_GDB_CHERI_PYTHON3
+	bool "Python 3"
+	help
+	  This option enables the Python 3 support in the cross gdb.
+
+endchoice
 
 config BR2_PACKAGE_HOST_GDB_CHERI_SIM
 	bool "Simulator support"
@@ -44,33 +60,4 @@ config BR2_PACKAGE_HOST_GDB_CHERI_SIM
 	help
 	  This option enables the simulator support in the cross gdb.
 
-choice
-	prompt "CHERI GDB debugger Version"
-	default BR2_GDB_CHERI_VERSION_8_3
-	depends on !BR2_arc
-	depends on !BR2_csky
-	help
-	  Select the version of gdb you wish to use.
-
-config BR2_GDB_CHERI_VERSION_8_1
-	bool "gdb 8.1.x"
-
-config BR2_GDB_CHERI_VERSION_8_2
-	bool "gdb 8.2.x"
-
-config BR2_GDB_CHERI_VERSION_8_3
-	bool "gdb 8.3.x"
-
-endchoice
-
 endif
-
-# If cross-gdb is not enabled, the latest working version is chosen.
-config BR2_GDB_CHERI_VERSION
-	string
-	default "arc-2019.09-rc1-gdb" if BR2_arc
-	default "4ecb98fbc2f94dbe01b69384afbc515107de73df" if BR2_csky
-	default "8.1.1"    if BR2_GDB_CHERI_VERSION_8_1
-	default "8.2.1"    if BR2_GDB_CHERI_VERSION_8_2 || !BR2_PACKAGE_HOST_GDB_CHERI
-	default "8.3"	   if BR2_GDB_CHERI_VERSION_8_3
-	depends on BR2_PACKAGE_GDB_CHERI || BR2_PACKAGE_HOST_GDB_CHERI

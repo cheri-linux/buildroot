@@ -4,26 +4,41 @@
 #
 ################################################################################
 
-GDB_CHERI_VERSION = cheri-rel-20210817
-GDB_CHERI_SITE = https://github.com/CTSRD-CHERI/gdb.git
+GDB_CHERI_VERSION = riscv-cheri
+GDB_CHERI_SITE = https://github.com/cheri-linux/gdb.git
 GDB_CHERI_SITE_METHOD = git
+GDB_CHERI_FROM_GIT = y
+# recent gdb versions (>= 10) have gdbserver moved at the top-level,
+# which requires a different build logic.
+GDB_CHERI_GDBSERVER_TOPLEVEL = y
 
 GDB_CHERI_LICENSE = GPL-2.0+, LGPL-2.0+, GPL-3.0+, LGPL-3.0+
 GDB_CHERI_LICENSE_FILES = COPYING COPYING.LIB COPYING3 COPYING3.LIB
 
-# We only want gdbserver and not the entire debugger.
-ifeq ($(BR2_PACKAGE_GDB_CHERI_DEBUGGER),)
+# On gdb < 10, if you want to build only gdbserver, you need to
+# configure only gdb/gdbserver.
+ifeq ($(BR2_PACKAGE_GDB_CHERI_DEBUGGER)$(GDB_CHERI_GDBSERVER_TOPLEVEL),)
 GDB_CHERI_SUBDIR = gdb/gdbserver
-HOST_GDB_CHERI_SUBDIR = .
+
+# When we want to build the full gdb, or for very recent versions of
+# gdb with gdbserver at the top-level, out of tree build is mandatory,
+# so we create a 'build' subdirectory in the gdb sources, and build
+# from there.
 else
-GDB_CHERI_DEPENDENCIES = ncurses \
-	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+GDB_CHERI_SUBDIR = build
+define GDB_CHERI_CONFIGURE_SYMLINK
+	mkdir -p $(@D)/$(GDB_CHERI_SUBDIR)
+	ln -sf ../configure $(@D)/$(GDB_CHERI_SUBDIR)/configure
+endef
+GDB_CHERI_PRE_CONFIGURE_HOOKS += GDB_CHERI_CONFIGURE_SYMLINK
 endif
 
 # For the host variant, we really want to build with XML support,
 # which is needed to read XML descriptions of target architectures. We
 # also need ncurses.
-HOST_GDB_CHERI_DEPENDENCIES = host-expat host-ncurses
+# As for libiberty, gdb may use a system-installed one if present, so
+# we must ensure ours is installed first.
+HOST_GDB_CHERI_DEPENDENCIES = host-expat host-libiberty host-ncurses
 
 # Disable building documentation
 GDB_CHERI_MAKE_OPTS += MAKEINFO=true
@@ -55,7 +70,8 @@ GDB_CHERI_DISABLE_BINUTILS_CONF_OPTS = \
 	--disable-binutils \
 	--disable-install-libbfd \
 	--disable-ld \
-	--disable-gas
+	--disable-gas \
+	--disable-gprof
 
 GDB_CHERI_CONF_ENV = \
 	ac_cv_type_uintptr_t=yes \
@@ -113,12 +129,28 @@ GDB_CHERI_CONF_OPTS = \
 	--without-x \
 	--disable-sim \
 	$(GDB_CHERI_DISABLE_BINUTILS_CONF_OPTS) \
-	$(if $(BR2_PACKAGE_GDB_CHERI_SERVER),--enable-gdbserver,--disable-gdbserver) \
-	--with-curses \
 	--without-included-gettext \
 	--disable-werror \
 	--enable-static \
 	--without-mpfr
+
+ifeq ($(BR2_PACKAGE_GDB_CHERI_DEBUGGER),y)
+GDB_CHERI_CONF_OPTS += \
+	--enable-gdb \
+	--with-curses
+GDB_CHERI_DEPENDENCIES = ncurses \
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+else
+GDB_CHERI_CONF_OPTS += \
+	--disable-gdb \
+	--without-curses
+endif
+
+ifeq ($(BR2_PACKAGE_GDB_CHERI_SERVER),y)
+GDB_CHERI_CONF_OPTS += --enable-gdbserver
+else
+GDB_CHERI_CONF_OPTS += --disable-gdbserver
+endif
 
 # When gdb is built as C++ application for ARC it segfaults at runtime
 # So we pass --disable-build-with-cxx config option to force gdb not to
@@ -203,8 +235,7 @@ endif
 #    host build.
 #  * --enable-static because gdb really wants to use libbfd.a
 HOST_GDB_CHERI_CONF_OPTS = \
-	--prefix="$(HOST_DIR)/cheri" \
-	--enable-targets=all \
+	--target=$(GNU_TARGET_NAME) \
 	--enable-static \
 	--without-uiout \
 	--disable-gdbtk \
@@ -225,6 +256,9 @@ endif
 ifeq ($(BR2_PACKAGE_HOST_GDB_CHERI_PYTHON),y)
 HOST_GDB_CHERI_CONF_OPTS += --with-python=$(HOST_DIR)/bin/python2
 HOST_GDB_CHERI_DEPENDENCIES += host-python
+else ifeq ($(BR2_PACKAGE_HOST_GDB_CHERI_PYTHON3),y)
+HOST_GDB_CHERI_CONF_OPTS += --with-python=$(HOST_DIR)/bin/python3
+HOST_GDB_CHERI_DEPENDENCIES += host-python3
 else
 HOST_GDB_CHERI_CONF_OPTS += --without-python
 endif
@@ -235,9 +269,20 @@ else
 HOST_GDB_CHERI_CONF_OPTS += --disable-sim
 endif
 
+# Since gdb 9, in-tree builds for GDB are not allowed anymore,
+# so we create a 'build' subdirectory in the gdb sources, and
+# build from there.
+HOST_GDB_CHERI_SUBDIR = build
+
+define HOST_GDB_CHERI_CONFIGURE_SYMLINK
+	mkdir -p $(@D)/build
+	ln -sf ../configure $(@D)/build/configure
+endef
+HOST_GDB_CHERI_PRE_CONFIGURE_HOOKS += HOST_GDB_CHERI_CONFIGURE_SYMLINK
+
 # legacy $arch-linux-gdb symlink
 define HOST_GDB_CHERI_ADD_SYMLINK
-	cd $(HOST_DIR)/cheri/bin && \
+	cd $(HOST_DIR)/bin && \
 		ln -snf $(GNU_TARGET_NAME)-gdb $(ARCH)-linux-gdb
 endef
 
