@@ -17,6 +17,6 @@ $QEMUC \
    -append "root=/dev/vda ro norandmaps" \
    -drive file=$ROOTFS,format=raw,id=hd0 \
    -device virtio-blk-device,drive=hd0 \
-   -netdev user,id=net0,ipv6=off,hostfwd=tcp::7777-:22,hostfwd=tcp::7778-:2222 \
+   -netdev user,id=net0,ipv6=off,hostfwd=tcp::7777-:22,hostfwd=tcp::7778-:2222,hostfwd=tcp::7779-:1111 \
    -device virtio-net-device,netdev=net0 \
    -s
