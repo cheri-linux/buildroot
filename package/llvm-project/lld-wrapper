@@ -106,6 +106,7 @@ if [ $TARGET_RELOCATABLE -eq 0 -a $TARGET_SHARED -eq 0 -a $TARGET_NOSTDLIB -eq 0
 	msg STDLIB
 	set -- "$@" -dynamic-linker $ldso
 	set -- "$@" -rpath=/cheri/lib
+	set -- "$@" -rpath=/cheri/lib64
 	set -- "$@" -rpath=/cheri/usr/lib
 fi
 
