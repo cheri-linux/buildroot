@@ -161,6 +161,8 @@ GLIBC_LIBS_LIB = \
 
 ifeq ($(BR2_PACKAGE_GDB),y)
 GLIBC_LIBS_LIB += libthread_db.so.*
+else ifeq ($(BR2_PACKAGE_GDB_CHERI),y)
+GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
 ifeq ($(BR2_PACKAGE_GLIBC_UTILS),y)
