@@ -1,0 +1,7 @@
+config BR2_PACKAGE_EXPAT_CHERI
+	bool "expat-cheri"
+	depends on BR2_TOOLCHAIN_CHERI
+	help
+	  The Expat XML Parser.
+
+	  http://expat.sourceforge.net
