@@ -16,11 +16,8 @@ DBUS_CHERI_LICENSE_FILES = COPYING
 DBUS_CHERI_INSTALL_STAGING = YES
 
 # Git version must be autoconf'd
-#DBUS_CHERI_AUTORECONF = YES  # does not work properly
-define DBUS_CHERI_PRE_CONFIGURE_BOOTSTRAP
-    cd $(@D)/ && ./autogen.sh
-endef
-DBUS_CHERI_PRE_CONFIGURE_HOOKS += DBUS_CHERI_PRE_CONFIGURE_BOOTSTRAP
+DBUS_CHERI_AUTORECONF = YES
+DBUS_CHERI_AUTORECONF_OPTS = --include=$(HOST_DIR)/share/autoconf-archive
 
 define DBUS_CHERI_PERMISSIONS
 	/cheri/usr/libexec/dbus-daemon-launch-helper f 4750 0 dbus - - - - -
@@ -30,7 +27,7 @@ define DBUS_CHERI_USERS
 	dbus -1 dbus -1 * /run/dbus - dbus DBus messagebus user
 endef
 
-DBUS_CHERI_DEPENDENCIES = host-pkgconf expat-cheri
+DBUS_CHERI_DEPENDENCIES = host-autoconf-archive host-pkgconf expat-cheri
 
 DBUS_CHERI_SELINUX_MODULES = dbus
 
