@@ -55,8 +55,10 @@ endif
 
 endif
 
-# There is no "--enable-slirp"
-ifeq ($(BR2_PACKAGE_QEMU_CHERI_SLIRP),)
+ifeq ($(BR2_PACKAGE_QEMU_CHERI_SLIRP),y)
+QEMU_CHERI_OPTS += --enable-slirp=system
+QEMU_CHERI_DEPENDENCIES += slirp
+else
 QEMU_CHERI_OPTS += --disable-slirp
 endif
 
@@ -88,11 +90,11 @@ else
 QEMU_CHERI_OPTS += --disable-seccomp
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSSH2),y)
-QEMU_CHERI_OPTS += --enable-libssh2
-QEMU_CHERI_DEPENDENCIES += libssh2
+ifeq ($(BR2_PACKAGE_LIBSSH),y)
+QEMU_CHERI_OPTS += --enable-libssh
+QEMU_CHERI_DEPENDENCIES += libssh
 else
-QEMU_CHERI_OPTS += --disable-libssh2
+QEMU_CHERI_OPTS += --disable-libssh
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
@@ -100,6 +102,27 @@ QEMU_CHERI_OPTS += --enable-libusb
 QEMU_CHERI_DEPENDENCIES += libusb
 else
 QEMU_CHERI_OPTS += --disable-libusb
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVNCSERVER),y)
+QEMU_CHERI_OPTS += \
+	--enable-vnc \
+	--disable-vnc-sasl
+QEMU_CHERI_DEPENDENCIES += libvncserver
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+QEMU_CHERI_OPTS += --enable-vnc-png
+QEMU_CHERI_DEPENDENCIES += libpng
+else
+QEMU_CHERI_OPTS += --disable-vnc-png
+endif
+ifeq ($(BR2_PACKAGE_JPEG),y)
+QEMU_CHERI_OPTS += --enable-vnc-jpeg
+QEMU_CHERI_DEPENDENCIES += jpeg
+else
+QEMU_CHERI_OPTS += --disable-vnc-jpeg
+endif
+else
+QEMU_CHERI_OPTS += --disable-vnc
 endif
 
 ifeq ($(BR2_PACKAGE_NETTLE),y)
@@ -118,6 +141,20 @@ endif
 
 QEMU_CHERI_OPTS += --disable-stack-protector --disable-rdma
 QEMU_CHERI_OPTS += --disable-werror --disable-pie
+
+ifeq ($(BR2_PACKAGE_SPICE),y)
+QEMU_CHERI_OPTS += --enable-spice
+QEMU_CHERI_DEPENDENCIES += spice
+else
+QEMU_CHERI_OPTS += --disable-spice
+endif
+
+ifeq ($(BR2_PACKAGE_USBREDIR),y)
+QEMU_CHERI_OPTS += --enable-usb-redir
+QEMU_CHERI_DEPENDENCIES += usbredir
+else
+QEMU_CHERI_OPTS += --disable-usb-redir
+endif
 
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
@@ -138,21 +175,19 @@ define QEMU_CHERI_CONFIGURE_CMDS
 			--enable-attr \
 			--enable-vhost-net \
 			--disable-bsd-user \
+			--disable-containers \
 			--disable-xen \
-			--disable-vnc \
 			--disable-virtfs \
 			--disable-brlapi \
 			--disable-curses \
 			--disable-curl \
-			--disable-bluez \
 			--disable-vde \
 			--disable-linux-aio \
+			--disable-linux-io-uring \
 			--disable-cap-ng \
 			--disable-docs \
-			--disable-spice \
 			--disable-rbd \
 			--disable-libiscsi \
-			--disable-usb-redir \
 			--disable-strip \
 			--disable-sparse \
 			--disable-mpath \
@@ -201,6 +236,7 @@ HOST_QEMU_CHERI_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman 
 #       mips64          mips64
 #       mips64el        mips64el
 #       nios2           nios2
+#       or1k            or1k
 #       powerpc         ppc
 #       powerpc64       ppc64
 #       powerpc64le     ppc64 (system) / ppc64le (usermode)
@@ -238,13 +274,6 @@ HOST_QEMU_CHERI_ARCH = sh4
 endif
 ifeq ($(HOST_QEMU_CHERI_ARCH),sh4aeb)
 HOST_QEMU_CHERI_ARCH = sh4eb
-endif
-ifeq ($(HOST_QEMU_CHERI_ARCH),csky)
-ifeq ($(BR2_ck610),y)
-HOST_QEMU_CHERI_ARCH = cskyv1
-else
-HOST_QEMU_CHERI_ARCH = cskyv2
-endif
 endif
 HOST_QEMU_CHERI_SYS_ARCH ?= $(HOST_QEMU_CHERI_ARCH)
 
@@ -286,11 +315,12 @@ HOST_QEMU_CHERI_OPTS += --enable-vde
 HOST_QEMU_CHERI_DEPENDENCIES += host-vde2
 endif
 
+# virtfs-proxy-helper is the only user of libcap-ng.
 ifeq ($(BR2_PACKAGE_HOST_QEMU_CHERI_VIRTFS),y)
-HOST_QEMU_CHERI_OPTS += --enable-virtfs
-HOST_QEMU_CHERI_DEPENDENCIES += host-libcap
+HOST_QEMU_CHERI_OPTS += --enable-virtfs --enable-cap-ng
+HOST_QEMU_CHERI_DEPENDENCIES += host-libcap-ng
 else
-HOST_QEMU_CHERI_OPTS += --disable-virtfs
+HOST_QEMU_CHERI_OPTS += --disable-virtfs --disable-cap-ng
 endif
 
 ifeq ($(BR2_PACKAGE_HOST_QEMU_CHERI_USB),y)
@@ -326,6 +356,15 @@ define HOST_QEMU_CHERI_CONFIGURE_CMDS
 		--extra-cflags="$(HOST_QEMU_CHERI_CFLAGS)" \
 		--extra-ldflags="$(HOST_QEMU_CHERI_LDFLAGS)" \
 		--python=$(HOST_DIR)/bin/python3 \
+		--disable-bzip2 \
+		--disable-containers \
+		--disable-curl \
+		--disable-libssh \
+		--disable-linux-io-uring \
+		--disable-sdl \
+		--disable-vnc-jpeg \
+		--disable-vnc-png \
+		--disable-vnc-sasl \
 		$(HOST_QEMU_CHERI_OPTS)
 endef
 
