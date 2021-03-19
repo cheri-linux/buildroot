@@ -102,7 +102,7 @@ for x ; do
 	fi
 done
 
-if [ $TARGET_RELOCATABLE -eq 0 -a $TARGET_SHARED -eq 0 -a $TARGET_NOSTDLIB -eq 0 ]; then
+if [ "$libc" = "glibc-cheri" ] || [ $TARGET_RELOCATABLE -eq 0 -a $TARGET_SHARED -eq 0 -a $TARGET_NOSTDLIB -eq 0 ]; then
 	msg STDLIB
 	set -- "$@" -dynamic-linker $ldso
 	set -- "$@" -rpath=/cheri/lib
