@@ -1,0 +1,27 @@
+From dae4b374827d6d7abd6131089ef5528bf03565bc Mon Sep 17 00:00:00 2001
+From: Lukas Auer <lukas.auer@aisec.fraunhofer.de>
+Date: Mon, 22 Mar 2021 11:05:57 +0100
+Subject: [PATCH] Discard interp section
+
+Our CHERI toolchain setup unconditionally adds an .interp section to all
+binaries by specifying the dynamic linker. In riscv-pk this causes the
+.text to become unaligned, causing the link stage to fail. Remove the
+.interp section in the linker script to fix this.
+---
+ bbl/bbl.lds | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/bbl/bbl.lds b/bbl/bbl.lds
+index 624f691..dc1838c 100644
+--- a/bbl/bbl.lds
++++ b/bbl/bbl.lds
+@@ -103,4 +103,6 @@ SECTIONS
+   {
+     *(.payload)
+   }
++
++  /DISCARD/ : { *(.interp) }
+ }
+-- 
+2.30.2
+
