@@ -40,12 +40,12 @@ case "$TARGET_ARCH" in
 riscv64)
 	CCARGS="$CCARGS --target=riscv64-linux-gnu"
 	CCARGS="$CCARGS -march=rv64imafdc -mabi=lp64d -mno-relax"
-	CFLAGS="$CFLAGS -Wno-error=unused-command-line-argument"
+	CFLAGS="$CFLAGS -Wno-unused-command-line-argument"
 	;;
 riscv64cheri)
 	CCARGS="$CCARGS --target=riscv64-linux-gnu"
 	CCARGS="$CCARGS -march=rv64imafdcxcheri -mabi=l64pc128d -mno-relax"
-	CFLAGS="$CFLAGS -Wno-error=unused-command-line-argument"
+	CFLAGS="$CFLAGS -Wno-unused-command-line-argument"
 	;;
 *)
         echo "Unknown architecture"
