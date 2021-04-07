@@ -1,6 +1,7 @@
-config BR2_PACKAGE_LIBCAP
-	bool "libcap"
+config BR2_PACKAGE_LIBCAP_CHERI
+	bool "libcap-cheri"
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_CHERI
 	help
 	  This library implements the user-space interfaces to the
 	  POSIX 1003.1e capabilities available in Linux kernels. These
@@ -9,9 +10,9 @@ config BR2_PACKAGE_LIBCAP
 
 	  http://sites.google.com/site/fullycapable/
 
-if BR2_PACKAGE_LIBCAP
+if BR2_PACKAGE_LIBCAP_CHERI
 
-config BR2_PACKAGE_LIBCAP_TOOLS
+config BR2_PACKAGE_LIBCAP_CHERI_TOOLS
 	bool "install tools"
 	help
 	  Install setcap, getcap, getpcaps and capsh tools.
