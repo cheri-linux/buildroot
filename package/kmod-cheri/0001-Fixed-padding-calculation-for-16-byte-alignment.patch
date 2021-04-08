@@ -1,0 +1,27 @@
+From 02d57767db10d50c5f8b278a727d5525f66dd624 Mon Sep 17 00:00:00 2001
+From: Vincent Ahlrichs <vincent.ahlrichs@aisec.fraunhofer.de>
+Date: Mon, 3 May 2021 17:54:11 +0200
+Subject: [PATCH] Fixed padding calculation for 16 byte alignment
+
+---
+ libkmod/libkmod-index.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/libkmod/libkmod-index.c b/libkmod/libkmod-index.c
+index 1f3351a..30bfe84 100644
+--- a/libkmod/libkmod-index.c
++++ b/libkmod/libkmod-index.c
+@@ -697,8 +697,8 @@ static struct index_mm_node *index_mm_read_node(struct index_mm *idx,
+ 		child_count = 0;
+ 	}
+ 
+-	children_padding = (sizeof(struct index_mm_node) +
+-			    (sizeof(uint32_t) * child_count)) % sizeof(void *);
++	children_padding = sizeof(void*) - ((sizeof(struct index_mm_node) +
++			    (sizeof(uint32_t) * child_count)) % sizeof(void *)) % sizeof(void *);
+ 
+ 	if (offset & INDEX_NODE_VALUES)
+ 		value_count = read_long_mm(&p);
+-- 
+2.36.1
+
