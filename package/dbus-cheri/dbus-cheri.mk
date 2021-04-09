@@ -77,25 +77,25 @@ ifeq ($(BR2_microblaze),y)
 DBUS_CHERI_CONF_OPTS += --disable-inotify
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+ifeq ($(BR2_PACKAGE_LIBSELINUX_CHERI),y)
 DBUS_CHERI_CONF_OPTS += --enable-selinux
-DBUS_CHERI_DEPENDENCIES += libselinux
+DBUS_CHERI_DEPENDENCIES += libselinux-cheri
 else
 DBUS_CHERI_CONF_OPTS += --disable-selinux
 endif
 
-ifeq ($(BR2_PACKAGE_AUDIT)$(BR2_PACKAGE_LIBCAP_NG),yy)
+ifeq ($(BR2_PACKAGE_AUDIT_CHERI)$(BR2_PACKAGE_LIBCAP_NG_CHERI),yy)
 DBUS_CHERI_CONF_OPTS += --enable-libaudit
-DBUS_CHERI_DEPENDENCIES += audit libcap-ng
+DBUS_CHERI_DEPENDENCIES += audit-cheri libcap-ng-cheri
 else
 DBUS_CHERI_CONF_OPTS += --disable-libaudit
 endif
 
-ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11_CHERI),y)
 DBUS_CHERI_CONF_OPTS += --with-x
-DBUS_CHERI_DEPENDENCIES += xlib_libX11
-ifeq ($(BR2_PACKAGE_XLIB_LIBSM),y)
-DBUS_CHERI_DEPENDENCIES += xlib_libSM
+DBUS_CHERI_DEPENDENCIES += xlib_libX11-cheri
+ifeq ($(BR2_PACKAGE_XLIB_LIBSM_CHERI),y)
+DBUS_CHERI_DEPENDENCIES += xlib_libSM-cheri
 endif
 else
 DBUS_CHERI_CONF_OPTS += --without-x
@@ -105,7 +105,7 @@ ifeq ($(BR2_INIT_SYSTEMD),y)
 DBUS_CHERI_CONF_OPTS += \
 	--enable-systemd \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
-DBUS_CHERI_DEPENDENCIES += systemd
+DBUS_CHERI_DEPENDENCIES += systemd-cheri
 else
 DBUS_CHERI_CONF_OPTS += --disable-systemd
 endif
