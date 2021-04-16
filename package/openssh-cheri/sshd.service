@@ -1,10 +1,10 @@
 [Unit]
-Description=OpenSSH server daemon
+Description=OpenSSH server daemon (CHERI)
 After=syslog.target network.target auditd.service
 
 [Service]
-ExecStartPre=/usr/bin/ssh-keygen -A
-ExecStart=/usr/sbin/sshd -D -e
+ExecStartPre=/cheri/usr/bin/ssh-keygen -A
+ExecStart=/cheri/usr/sbin/sshd -D -e
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]

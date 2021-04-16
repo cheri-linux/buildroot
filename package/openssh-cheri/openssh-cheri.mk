@@ -63,6 +63,23 @@ else
 OPENSSH_CHERI_CONF_OPTS += --without-selinux
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS)$(BR2_PACKAGE_SYSTEMD_CHERI_SYSUSERS),y)
+define OPENSSH_CHERI_INSTALL_SYSTEMD_SYSUSERS
+	$(INSTALL) -m 0644 -D package/openssh-cheri/sshd-sysusers.conf \
+		$(TARGET_DIR)/usr/lib/sysusers.d/sshd-cheri.conf
+endef
+else
+define OPENSSH_CHERI_USERS
+	sshd -1 sshd -1 * /var/empty - - SSH drop priv user
+endef
+endif
+
+define OPENSSH_CHERI_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 package/openssh-cheri/sshd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/sshd-cheri.service
+	$(OPENSSH_CHERI_INSTALL_SYSTEMD_SYSUSERS)
+endef
+
 define OPENSSH_CHERI_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/openssh-cheri/S50sshd \
 		$(TARGET_DIR)/etc/init.d/S50sshd-cheri
