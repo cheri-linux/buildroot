@@ -44,7 +44,8 @@ DBUS_CHERI_CONF_OPTS = \
 	--with-system-socket=/run/dbus/system_bus_socket \
 	--with-system-pid-file=/run/messagebus.pid \
 	--prefix=/cheri/usr \
-	--exec-prefix=/cheri/usr
+	--exec-prefix=/cheri/usr \
+	--datadir=/usr/share
 
 define DBUS_CHERI_INSTALL_TESTS
 	mkdir -p $(TARGET_DIR)/cheri/usr/bin/dbus-tests
