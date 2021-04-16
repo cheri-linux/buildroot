@@ -1,5 +1,5 @@
-config BR2_PACKAGE_HOST_UTIL_LINUX
-	bool "host util-linux"
+config BR2_PACKAGE_HOST_UTIL_LINUX_CHERI
+	bool "host util-linux (CHERI)"
 	help
 	  Various useful/essential linux libraries and utilities.
 
