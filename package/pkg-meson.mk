@@ -64,6 +64,37 @@ $(2)_CXXFLAGS ?= $$(TARGET_CXXFLAGS)
 # Configure package for target
 #
 #
+ifeq ($($(3)_NOPREFIX_CLANG),YES)
+define $(2)_CONFIGURE_CMDS
+	rm -rf $$($$(PKG)_SRCDIR)/build
+	mkdir -p $$($$(PKG)_SRCDIR)/build
+	sed -e 's%@TARGET_CROSS@%$$(TARGET_CROSS_CLANG)%g' \
+	    -e 's%@TARGET_CC@%$(TARGET_CC_CLANG)%g' \
+	    -e 's%@TARGET_CXX@%$(TARGET_CXX_CLANG)%g' \
+	    -e 's%@TARGET_ARCH@%$$(HOST_MESON_TARGET_CPU_FAMILY)%g' \
+	    -e 's%@TARGET_CPU@%$$(HOST_MESON_TARGET_CPU)%g' \
+	    -e 's%@TARGET_ENDIAN@%$$(HOST_MESON_TARGET_ENDIAN)%g' \
+	    -e "s%@TARGET_CFLAGS@%$$(call make-sq-comma-list,$$($(2)_CFLAGS))%g" \
+	    -e "s%@TARGET_LDFLAGS@%$$(call make-sq-comma-list,$$($(2)_LDFLAGS))%g" \
+	    -e "s%@TARGET_CXXFLAGS@%$$(call make-sq-comma-list,$$($(2)_CXXFLAGS))%g" \
+	    -e 's%@HOST_DIR@%$$(HOST_DIR)%g' \
+	    -e 's%@STAGING_DIR@%$$(STAGING_DIR)%g' \
+	    -e 's%@STATIC@%$$(if $$(BR2_STATIC_LIBS),true,false)%g' \
+	    -e "/^\[binaries\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_BINARIES),\n$$(x)):" \
+	    -e "/^\[properties\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_PROPERTIES),\n$$(x)):" \
+	    package/meson/cross-compilation-clang.conf.in \
+	    > $$($$(PKG)_SRCDIR)/build/cross-compilation-clang.conf
+	PATH=$$(BR_PATH) $$($$(PKG)_CONF_ENV) $$(MESON) \
+		--prefix=/usr \
+		--libdir=lib \
+		--default-library=$(if $(BR2_STATIC_LIBS),static,shared) \
+		--buildtype=$(if $(BR2_ENABLE_DEBUG),debug,release) \
+		--cross-file=$$($$(PKG)_SRCDIR)/build/cross-compilation-clang.conf \
+		-Dbuild.pkg_config_path=$$(HOST_DIR)/lib/pkgconfig \
+		$$($$(PKG)_CONF_OPTS) \
+		$$($$(PKG)_SRCDIR) $$($$(PKG)_SRCDIR)/build
+endef
+else
 define $(2)_CONFIGURE_CMDS
 	rm -rf $$($$(PKG)_SRCDIR)/build
 	mkdir -p $$($$(PKG)_SRCDIR)/build
@@ -91,6 +122,7 @@ define $(2)_CONFIGURE_CMDS
 		$$($$(PKG)_CONF_OPTS) \
 		$$($$(PKG)_SRCDIR) $$($$(PKG)_SRCDIR)/build
 endef
+endif
 else
 
 # Configure package for host
@@ -206,3 +238,28 @@ define PKG_MESON_INSTALL_CROSS_CONF
 endef
 
 TOOLCHAIN_TARGET_FINALIZE_HOOKS += PKG_MESON_INSTALL_CROSS_CONF
+
+define PKG_MESON_INSTALL_CLANG_CROSS_CONF
+	mkdir -p $(HOST_DIR)/etc/meson
+	sed -e 's%@TARGET_CROSS@%$(TARGET_CROSS_CLANG)%g' \
+	    -e 's%@TARGET_CC@%$(TARGET_CC_CLANG)%g' \
+	    -e 's%@TARGET_CXX@%$(TARGET_CXX_CLANG)%g' \
+	    -e 's%@TARGET_ARCH@%$(HOST_MESON_TARGET_CPU_FAMILY)%g' \
+	    -e 's%@TARGET_CPU@%$(HOST_MESON_TARGET_CPU)%g' \
+	    -e 's%@TARGET_ENDIAN@%$(HOST_MESON_TARGET_ENDIAN)%g' \
+	    -e "s%@TARGET_CFLAGS@%$(call make-sq-comma-list,$(TARGET_CFLAGS))@PKG_TARGET_CFLAGS@%g" \
+	    -e "s%@TARGET_LDFLAGS@%$(call make-sq-comma-list,$(TARGET_LDFLAGS))@PKG_TARGET_CFLAGS@%g" \
+	    -e "s%@TARGET_CXXFLAGS@%$(call make-sq-comma-list,$(TARGET_CXXFLAGS))@PKG_TARGET_CFLAGS@%g" \
+	    -e 's%@HOST_DIR@%$(HOST_DIR)%g' \
+	    -e 's%@STAGING_DIR@%$(STAGING_DIR)%g' \
+	    -e 's%@STATIC@%$(if $(BR2_STATIC_LIBS),true,false)%g' \
+	    $(HOST_MESON_PKGDIR)/cross-compilation-clang.conf.in \
+	    > $(HOST_DIR)/etc/meson/cross-compilation-clang.conf.in
+	sed -e 's%@PKG_TARGET_CFLAGS@%%g' \
+	    -e 's%@PKG_TARGET_LDFLAGS@%%g' \
+	    -e 's%@PKG_TARGET_CXXFLAGS@%%g' \
+	    $(HOST_DIR)/etc/meson/cross-compilation-clang.conf.in \
+	    > $(HOST_DIR)/etc/meson/cross-compilation-clang.conf
+endef
+
+TOOLCHAIN_TARGET_FINALIZE_HOOKS += PKG_MESON_INSTALL_CLANG_CROSS_CONF
