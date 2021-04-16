@@ -19,7 +19,7 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 NEARD_CONF_OPTS += --enable-systemd
-NEARD_DEPENDENCIES += systemd
+NEARD_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 NEARD_CONF_OPTS += --disable-systemd
 endif

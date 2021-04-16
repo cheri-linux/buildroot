@@ -67,7 +67,7 @@ else
 OPENSSH_CONF_OPTS += --without-selinux
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS),y)
+ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS)$(BR2_PACKAGE_SYSTEMD_CHERI_SYSUSERS),y)
 define OPENSSH_INSTALL_SYSTEMD_SYSUSERS
 	$(INSTALL) -m 0644 -D package/openssh/sshd-sysusers.conf \
 		$(TARGET_DIR)/usr/lib/sysusers.d/sshd.conf

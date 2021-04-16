@@ -14,7 +14,7 @@ DRBD_UTILS_CONF_OPTS = --with-distro=generic --without-manual
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 DRBD_UTILS_CONF_OPTS += --with-initscripttype=systemd
-DRBD_UTILS_DEPENDENCIES += systemd
+DRBD_UTILS_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 DRBD_UTILS_CONF_OPTS += --with-initscripttype=sysv
 endif

@@ -59,7 +59,7 @@ BUSYBOX_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_PSMISC),psmisc) \
 	$(if $(BR2_PACKAGE_START_STOP_DAEMON),start-stop-daemon) \
 	$(if $(BR2_PACKAGE_SYSKLOGD),sysklogd) \
-	$(if $(BR2_PACKAGE_SYSTEMD),systemd) \
+	$(if $(BR2_INIT_SYSTEMD),$(SYSTEM_INIT_SYSTEMD_DEPENDENCY)) \
 	$(if $(BR2_PACKAGE_SYSVINIT),sysvinit) \
 	$(if $(BR2_PACKAGE_TAR),tar) \
 	$(if $(BR2_PACKAGE_TFTPD),tftpd) \
@@ -247,7 +247,7 @@ endif
 
 # enable relevant options to allow the Busybox less applet to be used
 # as a systemd pager
-ifeq ($(BR2_PACKAGE_SYSTEMD):$(BR2_PACKAGE_LESS),y:)
+ifeq ($(BR2_INIT_SYSTEMD):$(BR2_PACKAGE_LESS),y:)
 define BUSYBOX_SET_LESS_FLAGS
 	$(call KCONFIG_ENABLE_OPT,CONFIG_FEATURE_LESS_DASHCMD)
 	$(call KCONFIG_ENABLE_OPT,CONFIG_FEATURE_LESS_RAW)

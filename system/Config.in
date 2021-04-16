@@ -119,27 +119,11 @@ comment "openrc needs a toolchain w/ dynamic library"
 # with BR2_PACKAGE_SYSTEMD.
 config BR2_INIT_SYSTEMD
 	bool "systemd"
-	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS || BR2_PACKAGE_SYSTEMD_CHERI_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_TOOLCHAIN_HAS_SSP
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5
-	depends on BR2_HOST_GCC_AT_LEAST_5
 	select BR2_ROOTFS_MERGED_USR
-	select BR2_PACKAGE_SYSTEMD
 	select BR2_PACKAGE_SKELETON_INIT_SYSTEMD if BR2_ROOTFS_SKELETON_DEFAULT
-
-comment "systemd needs a glibc toolchain w/ SSP, headers >= 3.10, host and target gcc >= 5"
-	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
-	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
-		!BR2_TOOLCHAIN_HAS_SSP || \
-		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_5 || \
-		!BR2_HOST_GCC_AT_LEAST_5
 
 config BR2_INIT_NONE
 	bool "None"
@@ -153,6 +137,52 @@ config BR2_INIT_NONE
 source "$BR2_BASE_DIR/.br2-external.in.init"
 
 endchoice
+
+choice
+	prompt "systemd version"
+	depends on BR2_INIT_SYSTEMD
+	default BR2_INIT_SYSTEMD_PLAIN
+
+config BR2_INIT_SYSTEMD_PLAIN
+	bool "plain"
+	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	depends on BR2_HOST_GCC_AT_LEAST_5
+	select BR2_PACKAGE_SYSTEMD
+
+comment "systemd (plain) needs a glibc toolchain w/ SSP, headers >= 3.10, host and target gcc >= 5"
+	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_TOOLCHAIN_HAS_SSP || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_5 || \
+		!BR2_HOST_GCC_AT_LEAST_5
+
+config BR2_INIT_SYSTEMD_CHERI
+	bool "cherified"
+	depends on BR2_PACKAGE_SYSTEMD_CHERI_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_CHERI_GLIBC
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	select BR2_PACKAGE_SYSTEMD_CHERI
+
+comment "systemd (cherified) needs a glibc CHERI toolchain, headers >= 3.10"
+	depends on BR2_PACKAGE_SYSTEMD_CHERI_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_CHERI_GLIBC || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+
+endchoice
+
+config BR2_INIT_SYSTEMD_DEPENDENCY
+	string
+	default "systemd" if BR2_INIT_SYSTEMD && BR2_INIT_SYSTEMD_PLAIN
+	default "systemd-cheri" if BR2_INIT_SYSTEMD && BR2_INIT_SYSTEMD_CHERI
+	default "error-select-systemd-version" if BR2_INIT_SYSTEMD
 
 choice
 	prompt "/dev management" if !BR2_INIT_SYSTEMD

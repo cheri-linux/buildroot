@@ -53,9 +53,9 @@ ifeq ($(BR2_ROOTFS_MERGED_USR),y)
 UTIL_LINUX_CONF_OPTS += --bindir=/usr/bin --sbindir=/usr/sbin --libdir=/usr/lib
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 UTIL_LINUX_CONF_OPTS += --with-systemd --with-systemdsystemunitdir=/usr/lib/systemd/system
-UTIL_LINUX_DEPENDENCIES += systemd
+UTIL_LINUX_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 UTIL_LINUX_CONF_OPTS += --without-systemd --with-systemdsystemunitdir=no
 endif

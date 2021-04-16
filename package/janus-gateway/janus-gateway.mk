@@ -119,8 +119,8 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-JANUS_GATEWAY_DEPENDENCIES += systemd
+ifeq ($(BR2_INIT_SYSTEMD),y)
+JANUS_GATEWAY_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 JANUS_GATEWAY_CONF_OPTS += --enable-systemd-sockets
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-systemd-sockets

@@ -54,12 +54,12 @@ XSERVER_XORG_SERVER_CONF_OPTS = \
 	--with-fontrootdir=/usr/share/fonts/X11/ \
 	--$(if $(BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB),en,dis)able-xvfb
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 XSERVER_XORG_SERVER_CONF_OPTS += \
 	--with-systemd-daemon \
 	--enable-systemd-logind
 XSERVER_XORG_SERVER_DEPENDENCIES += \
-	systemd
+	$(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 XSERVER_XORG_SERVER_CONF_OPTS += \
 	--without-systemd-daemon \

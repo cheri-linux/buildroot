@@ -105,7 +105,7 @@ ifeq ($(BR2_INIT_SYSTEMD),y)
 DBUS_CHERI_CONF_OPTS += \
 	--enable-systemd \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
-DBUS_CHERI_DEPENDENCIES += systemd-cheri
+DBUS_CHERI_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 DBUS_CHERI_CONF_OPTS += --disable-systemd
 endif

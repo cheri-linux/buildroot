@@ -62,9 +62,9 @@ else
 SQUID_CONF_OPTS += --without-gnutls
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 SQUID_CONF_OPTS += --with-systemd
-SQUID_DEPENDENCIES += systemd
+SQUID_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 SQUID_CONF_OPTS += --without-systemd
 endif

@@ -68,7 +68,7 @@ ifeq ($(BR2_INIT_SYSTEMD),y)
 DBUS_CONF_OPTS += \
 	--enable-systemd \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
-DBUS_DEPENDENCIES += systemd
+DBUS_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 DBUS_CONF_OPTS += --disable-systemd
 endif

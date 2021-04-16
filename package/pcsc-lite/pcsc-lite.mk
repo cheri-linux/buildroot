@@ -28,9 +28,9 @@ PCSC_LITE_CONF_OPTS += --disable-libusb --disable-libudev
 endif
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 PCSC_LITE_CONF_OPTS += --enable-libsystemd
-PCSC_LITE_DEPENDENCIES += systemd
+PCSC_LITE_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 PCSC_LITE_CONF_OPTS += --disable-libsystemd
 endif

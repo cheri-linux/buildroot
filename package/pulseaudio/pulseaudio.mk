@@ -24,7 +24,7 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_DBUS),dbus) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW_SINGLE),fftw-single) \
-	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
+	$(if $(BR2_INIT_SYSTEMD),$(SYSTEM_INIT_SYSTEMD_DEPENDENCY))
 
 ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
 PULSEAUDIO_CONF_OPTS += --enable-samplerate

@@ -17,7 +17,7 @@ RPCBIND_CONF_OPTS += --with-rpcuser=root
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 RPCBIND_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
-RPCBIND_DEPENDENCIES += systemd
+RPCBIND_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 RPCBIND_CONF_OPTS += --with-systemdsystemunitdir=no
 endif

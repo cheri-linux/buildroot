@@ -65,8 +65,8 @@ else
 OPENVPN_CONF_OPTS += --disable-pkcs11
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-OPENVPN_DEPENDENCIES += systemd
+ifeq ($(BR2_INIT_SYSTEMD),y)
+OPENVPN_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 OPENVPN_CONF_OPTS += --enable-systemd
 else
 OPENVPN_CONF_OPTS += --disable-systemd

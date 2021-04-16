@@ -38,9 +38,9 @@ else
 PIPEWIRE_CONF_OPTS += -Dgstreamer=disabled
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 PIPEWIRE_CONF_OPTS += -Dsystemd=true
-PIPEWIRE_DEPENDENCIES += systemd
+PIPEWIRE_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 PIPEWIRE_CONF_OPTS += -Dsystemd=false
 endif

@@ -86,8 +86,8 @@ POSTGRESQL_CONF_OPTS += --without-libxml
 endif
 
 # required for postgresql.service Type=notify
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-POSTGRESQL_DEPENDENCIES += systemd
+ifeq ($(BR2_INIT_SYSTEMD),y)
+POSTGRESQL_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 POSTGRESQL_CONF_OPTS += --with-systemd
 else
 POSTGRESQL_CONF_OPTS += --without-systemd

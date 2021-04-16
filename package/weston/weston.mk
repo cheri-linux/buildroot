@@ -25,9 +25,12 @@ else
 WESTON_CONF_OPTS += -Dsimple-clients=
 endif
 
-ifeq ($(BR2_PACKAGE_DBUS)$(BR2_PACKAGE_SYSTEMD),yy)
+ifeq ($(BR2_PACKAGE_DBUS)$(BR2_INIT_SYSTEMD),yy)
 WESTON_CONF_OPTS += -Dlauncher-logind=true
-WESTON_DEPENDENCIES += dbus systemd
+WESTON_DEPENDENCIES += dbus $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
+else ifeq ($(BR2_PACKAGE_DBUS_CHERI)$(BR2_INIT_SYSTEMD),yy)
+WESTON_CONF_OPTS += -Dlauncher-logind=true
+WESTON_DEPENDENCIES += dbus-cheri $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 WESTON_CONF_OPTS += -Dlauncher-logind=false
 endif
@@ -118,9 +121,9 @@ else
 WESTON_CONF_OPTS += -Dcolor-management-lcms=false
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 WESTON_CONF_OPTS += -Dsystemd=true
-WESTON_DEPENDENCIES += systemd
+WESTON_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 WESTON_CONF_OPTS += -Dsystemd=false
 endif

@@ -18,7 +18,7 @@ TINC_CONF_ENV += \
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
-TINC_DEPENDENCIES += systemd
+TINC_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 TINC_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
 endif
 

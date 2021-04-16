@@ -1,7 +1,7 @@
 config BR2_PACKAGE_NSS_MYHOSTNAME
 	bool "nss-myhostname"
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on !BR2_PACKAGE_SYSTEMD_MYHOSTNAME
+	depends on !BR2_PACKAGE_SYSTEMD_MYHOSTNAME && !BR2_PACKAGE_SYSTEMD_CHERI_MYHOSTNAME
 	help
 	  Name Service Switch module for resolving the local hostname
 
@@ -9,4 +9,4 @@ config BR2_PACKAGE_NSS_MYHOSTNAME
 
 comment "nss-myhostname needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
-	depends on !BR2_PACKAGE_SYSTEMD_MYHOSTNAME
+	depends on !BR2_PACKAGE_SYSTEMD_MYHOSTNAME && !BR2_PACKAGE_SYSTEMD_CHERI_MYHOSTNAME

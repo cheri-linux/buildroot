@@ -62,7 +62,7 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 UTIL_LINUX_CHERI_CONF_OPTS += --with-systemd --with-systemdsystemunitdir=/usr/lib/systemd/system
-UTIL_LINUX_CHERI_DEPENDENCIES += systemd
+UTIL_LINUX_CHERI_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 UTIL_LINUX_CHERI_CONF_OPTS += --without-systemd --with-systemdsystemunitdir=no
 endif

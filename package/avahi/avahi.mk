@@ -48,7 +48,7 @@ AVAHI_DEPENDENCIES = host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 
 AVAHI_CFLAGS = $(TARGET_CFLAGS)
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 AVAHI_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
 else
 AVAHI_CONF_OPTS += --with-systemdsystemunitdir=no
@@ -149,7 +149,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS),y)
+ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS)$(BR2_PACKAGE_SYSTEMD_CHERI_SYSUSERS),y)
 define AVAHI_INSTALL_SYSTEMD_SYSUSERS
 	$(INSTALL) -D -m 644 package/avahi/avahi_sysusers.conf \
 		$(TARGET_DIR)/usr/lib/sysusers.d/avahi.conf

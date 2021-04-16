@@ -8,7 +8,7 @@ MIRACLECAST_VERSION = c94be167c85c6ec8badd7ac79e3dea2e0b73225c
 MIRACLECAST_SITE = $(call github,albfan,miraclecast,$(MIRACLECAST_VERSION))
 MIRACLECAST_LICENSE = LGPL-2.1+, GPL-2.0 (gdhcp)
 MIRACLECAST_LICENSE_FILES = COPYING LICENSE_gdhcp LICENSE_htable LICENSE_lgpl
-MIRACLECAST_DEPENDENCIES = host-pkgconf systemd gstreamer1 \
+MIRACLECAST_DEPENDENCIES = host-pkgconf $(SYSTEM_INIT_SYSTEMD_DEPENDENCY) gstreamer1 \
 	readline libglib2
 # Straight out the repository, no ./configure
 MIRACLECAST_AUTORECONF = YES

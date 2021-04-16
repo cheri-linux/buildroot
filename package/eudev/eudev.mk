@@ -57,7 +57,7 @@ endef
 
 HOST_EUDEV_DEPENDENCIES = host-gperf host-pkgconf
 
-HOST_EUDEV_SYSCONFDIR = $(if $(BR2_PACKAGE_SYSTEMD),/usr/lib,/etc)
+HOST_EUDEV_SYSCONFDIR = $(if $(BR2_INIT_SYSTEMD),/usr/lib,/etc)
 HOST_EUDEV_CONF_OPTS = \
 	--prefix=/usr \
 	--sbindir=/sbin \

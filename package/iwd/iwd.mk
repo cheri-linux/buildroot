@@ -39,14 +39,14 @@ else
 IWD_CONF_OPTS += --disable-client
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 IWD_CONF_OPTS += --enable-systemd-service
-IWD_DEPENDENCIES += systemd
+IWD_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 IWD_CONF_OPTS += --disable-systemd-service
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD_RESOLVED),y)
+ifeq ($(BR2_PACKAGE_SYSTEMD_RESOLVED)$(BR2_PACKAGE_SYSTEMD_CHERI_RESOLVED),y)
 IWD_RESOLV_SERVICE = systemd
 else
 IWD_RESOLV_SERVICE = resolvconf

@@ -79,7 +79,7 @@ RSYSLOG_CONF_OPTS += \
 	--enable-imjournal \
 	--enable-omjournal \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
-RSYSLOG_DEPENDENCIES += systemd
+RSYSLOG_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 RSYSLOG_CONF_OPTS += \
 	--disable-imjournal \

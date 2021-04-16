@@ -145,8 +145,8 @@ else
 GVFS_CONF_OPTS += -Dsmb=false
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-GVFS_DEPENDENCIES += systemd
+ifeq ($(BR2_INIT_SYSTEMD),y)
+GVFS_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 GVFS_CONF_OPTS += -Dlogind=true
 else
 GVFS_CONF_OPTS += \

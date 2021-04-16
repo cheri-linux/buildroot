@@ -89,7 +89,7 @@ SYSLOG_NG_CONF_OPTS += --disable-amqp
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
-SYSLOG_NG_DEPENDENCIES += systemd
+SYSLOG_NG_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 SYSLOG_NG_CONF_OPTS += \
 	--enable-systemd \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system

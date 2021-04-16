@@ -25,9 +25,9 @@ else
 RAUC_CONF_OPTS += --disable-json
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 # configure uses pkg-config --variable=systemdsystemunitdir systemd
-RAUC_DEPENDENCIES += systemd
+RAUC_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 endif
 
 define RAUC_INSTALL_INIT_SYSTEMD

@@ -92,7 +92,7 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 CLAMAV_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
-CLAMAV_DEPENDENCIES += systemd
+CLAMAV_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 CLAMAV_CONF_OPTS += --with-systemdsystemunitdir=no
 endif

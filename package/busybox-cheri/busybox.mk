@@ -63,7 +63,7 @@ BUSYBOX_CHERI_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_PSMISC),psmisc) \
 	$(if $(BR2_PACKAGE_START_STOP_DAEMON),start-stop-daemon) \
 	$(if $(BR2_PACKAGE_SYSKLOGD),sysklogd) \
-	$(if $(BR2_PACKAGE_SYSTEMD),systemd) \
+	$(if $(BR2_INIT_SYSTEMD),$(SYSTEM_INIT_SYSTEMD_DEPENDENCY)) \
 	$(if $(BR2_PACKAGE_SYSVINIT),sysvinit) \
 	$(if $(BR2_PACKAGE_TAR),tar) \
 	$(if $(BR2_PACKAGE_TFTPD),tftpd) \

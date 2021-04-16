@@ -32,10 +32,10 @@ CUPS_DEPENDENCIES = \
 	host-pkgconf \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 CUPS_CONF_OPTS += --with-systemd=/usr/lib/systemd/system \
 	--enable-systemd
-CUPS_DEPENDENCIES += systemd
+CUPS_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 CUPS_CONF_OPTS += --disable-systemd
 endif

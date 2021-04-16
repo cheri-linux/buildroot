@@ -74,9 +74,9 @@ else
 EFL_CONF_OPTS += -Dlibmount=false
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 EFL_CONF_OPTS += -Dsystemd=true
-EFL_DEPENDENCIES += systemd
+EFL_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 EFL_CONF_OPTS += -Dsystemd=false
 endif

@@ -96,8 +96,8 @@ else
 BRLTTY_CONF_OPTS += --without-rgx-package
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
-BRLTTY_DEPENDENCIES += systemd
+ifeq ($(BR2_INIT_SYSTEMD),y)
+BRLTTY_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 BRLTTY_CONF_OPTS += --with-service-package
 else
 BRLTTY_CONF_OPTS += --without-service-package

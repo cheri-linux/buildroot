@@ -6,7 +6,7 @@
 
 SDBUSPLUS_VERSION = 4212292bcf136d04b38ba5116aa568b0fa312798
 SDBUSPLUS_SITE = $(call github,openbmc,sdbusplus,$(SDBUSPLUS_VERSION))
-SDBUSPLUS_DEPENDENCIES = host-autoconf-archive host-pkgconf systemd
+SDBUSPLUS_DEPENDENCIES = host-autoconf-archive host-pkgconf $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 HOST_SDBUSPLUS_DEPENDENCIES = \
 	host-autoconf-archive \
 	host-pkgconf \

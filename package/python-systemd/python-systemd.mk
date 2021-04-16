@@ -10,6 +10,6 @@ PYTHON_SYSTEMD_SITE = https://pypi.python.org/packages/e8/a8/00ba0f605837a8f6952
 PYTHON_SYSTEMD_SETUP_TYPE = distutils
 PYTHON_SYSTEMD_LICENSE = LGPL-2.1
 PYTHON_SYSTEMD_LICENSE_FILES = LICENSE.txt
-PYTHON_SYSTEMD_DEPENDENCIES = systemd # To be able to link against libsystemd
+PYTHON_SYSTEMD_DEPENDENCIES = $(SYSTEM_INIT_SYSTEMD_DEPENDENCY) # To be able to link against libsystemd
 
 $(eval $(python-package))

@@ -126,9 +126,9 @@ BLUEZ5_UTILS_CONF_OPTS += --disable-udev
 endif
 
 # integrate with systemd if available
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 BLUEZ5_UTILS_CONF_OPTS += --enable-systemd
-BLUEZ5_UTILS_DEPENDENCIES += systemd
+BLUEZ5_UTILS_DEPENDENCIES += $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 BLUEZ5_UTILS_CONF_OPTS += --disable-systemd
 endif

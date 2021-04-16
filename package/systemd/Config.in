@@ -17,6 +17,7 @@ config BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 menuconfig BR2_PACKAGE_SYSTEMD
 	bool "systemd"
 	depends on BR2_INIT_SYSTEMD
+	depends on !BR2_INIT_SYSTEMD_CHERI
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS # kmod

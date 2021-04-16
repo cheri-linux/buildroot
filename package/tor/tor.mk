@@ -30,9 +30,9 @@ ifeq ($(BR2_PACKAGE_LIBCAP),y)
 TOR_DEPENDENCIES += libcap
 endif
 
-ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+ifeq ($(BR2_INIT_SYSTEMD),y)
 TOR_CONF_OPTS += --enable-systemd
-TOR_DEPENDENCIES += host-pkgconf systemd
+TOR_DEPENDENCIES += host-pkgconf $(SYSTEM_INIT_SYSTEMD_DEPENDENCY)
 else
 TOR_CONF_OPTS += --disable-systemd
 endif
