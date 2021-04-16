@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-SYSTEMD_CHERI_VERSION = 246.5
-SYSTEMD_CHERI_SITE = $(call github,systemd,systemd-stable,v$(SYSTEMD_CHERI_VERSION))
+SYSTEMD_CHERI_VERSION = riscv-cheri
+SYSTEMD_CHERI_SITE = https://github.com/cheri-linux/systemd.git
+SYSTEMD_CHERI_SITE_METHOD = git
 SYSTEMD_CHERI_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README), BSD-3-Clause (tools/chromiumos)
 SYSTEMD_CHERI_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README tools/chromiumos/LICENSE
 SYSTEMD_CHERI_INSTALL_STAGING = YES
@@ -13,10 +14,12 @@ SYSTEMD_CHERI_DEPENDENCIES = \
 	$(BR2_COREUTILS_HOST_DEPENDENCY) \
 	$(if $(BR2_PACKAGE_BASH_COMPLETION),bash-completion) \
 	host-gperf \
-	kmod \
-	libcap \
-	util-linux-libs \
+	kmod-cheri \
+	libcap-cheri \
+	util-linux-libs-cheri \
 	$(TARGET_NLS_DEPENDENCIES)
+
+SYSTEMD_CHERI_NOPREFIX_CLANG = YES
 
 SYSTEMD_CHERI_SELINUX_MODULES = systemd udev
 
@@ -26,204 +29,205 @@ SYSTEMD_CHERI_CONF_OPTS += \
 	-Ddefault-hierarchy=hybrid \
 	-Didn=true \
 	-Dima=false \
-	-Dkexec-path=/usr/sbin/kexec \
-	-Dkmod-path=/usr/bin/kmod \
+	-Dkexec-path=/cheri/usr/sbin/kexec \
+	-Dkmod-path=/cheri/usr/bin/kmod \
 	-Dldconfig=false \
-	-Dloadkeys-path=/usr/bin/loadkeys \
+	-Dloadkeys-path=/cheri/usr/bin/loadkeys \
 	-Dman=false \
-	-Dmount-path=/usr/bin/mount \
+	-Dmount-path=/cheri/usr/bin/mount \
 	-Dnss-systemd=true \
 	-Dportabled=false \
 	-Dquotacheck-path=/usr/sbin/quotacheck \
 	-Dquotaon-path=/usr/sbin/quotaon \
 	-Drootlibdir='/usr/lib' \
-	-Dsetfont-path=/usr/bin/setfont \
+	-Dsetfont-path=/cheri/usr/bin/setfont \
 	-Dsplit-bin=true \
 	-Dsplit-usr=false \
-	-Dsulogin-path=/usr/sbin/sulogin \
+	-Dsulogin-path=/cheri/usr/sbin/sulogin \
 	-Dsystem-gid-max=999 \
 	-Dsystem-uid-max=999 \
 	-Dsysvinit-path= \
 	-Dsysvrcnd-path= \
 	-Dtelinit-path= \
 	-Dtests=false \
-	-Dumount-path=/usr/bin/umount \
-	-Dutmp=false
+	-Dumount-path=/cheri/usr/bin/umount \
+	-Dutmp=false \
+	-Drootprefix=/usr
 
-ifeq ($(BR2_PACKAGE_ACL),y)
-SYSTEMD_CHERI_DEPENDENCIES += acl
+ifeq ($(BR2_PACKAGE_ACL_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += acl-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dacl=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dacl=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBAPPARMOR),y)
-SYSTEMD_CHERI_DEPENDENCIES += libapparmor
+ifeq ($(BR2_PACKAGE_LIBAPPARMOR_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libapparmor-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dapparmor=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dapparmor=false
 endif
 
-ifeq ($(BR2_PACKAGE_AUDIT),y)
-SYSTEMD_CHERI_DEPENDENCIES += audit
+ifeq ($(BR2_PACKAGE_AUDIT_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += audit-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Daudit=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Daudit=false
 endif
 
-ifeq ($(BR2_PACKAGE_CRYPTSETUP),y)
-SYSTEMD_CHERI_DEPENDENCIES += cryptsetup
+ifeq ($(BR2_PACKAGE_CRYPTSETUP_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += cryptsetup-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlibcryptsetup=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dlibcryptsetup=false
 endif
 
-ifeq ($(BR2_PACKAGE_ELFUTILS),y)
-SYSTEMD_CHERI_DEPENDENCIES += elfutils
+ifeq ($(BR2_PACKAGE_ELFUTILS_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += elfutils-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Delfutils=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Delfutils=false
 endif
 
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
-SYSTEMD_CHERI_DEPENDENCIES += gnutls
+ifeq ($(BR2_PACKAGE_GNUTLS_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += gnutls-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dgnutls=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dgnutls=false
 endif
 
-ifeq ($(BR2_PACKAGE_IPTABLES),y)
-SYSTEMD_CHERI_DEPENDENCIES += iptables
+ifeq ($(BR2_PACKAGE_IPTABLES_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += iptables-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlibiptc=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dlibiptc=false
 endif
 
 # Both options can't be selected at the same time so prefer libidn2
-ifeq ($(BR2_PACKAGE_LIBIDN2),y)
-SYSTEMD_CHERI_DEPENDENCIES += libidn2
+ifeq ($(BR2_PACKAGE_LIBIDN2_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libidn2-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlibidn2=true -Dlibidn=false
-else ifeq ($(BR2_PACKAGE_LIBIDN),y)
-SYSTEMD_CHERI_DEPENDENCIES += libidn
+else ifeq ($(BR2_PACKAGE_LIBIDN_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libidn-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlibidn=true -Dlibidn2=false
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dlibidn=false -Dlibidn2=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
-SYSTEMD_CHERI_DEPENDENCIES += libseccomp
+ifeq ($(BR2_PACKAGE_LIBSECCOMP_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libseccomp-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dseccomp=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dseccomp=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBXKBCOMMON),y)
-SYSTEMD_CHERI_DEPENDENCIES += libxkbcommon
+ifeq ($(BR2_PACKAGE_LIBXKBCOMMON_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libxkbcommon-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dxkbcommon=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dxkbcommon=false
 endif
 
-ifeq ($(BR2_PACKAGE_BZIP2),y)
-SYSTEMD_CHERI_DEPENDENCIES += bzip2
+ifeq ($(BR2_PACKAGE_BZIP2_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += bzip2-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dbzip2=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dbzip2=false
 endif
 
-ifeq ($(BR2_PACKAGE_ZSTD),y)
-SYSTEMD_CHERI_DEPENDENCIES += zstd
+ifeq ($(BR2_PACKAGE_ZSTD_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += zstd-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dzstd=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dzstd=false
 endif
 
-ifeq ($(BR2_PACKAGE_LZ4),y)
-SYSTEMD_CHERI_DEPENDENCIES += lz4
+ifeq ($(BR2_PACKAGE_LZ4_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += lz4-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlz4=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dlz4=false
 endif
 
-ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
-SYSTEMD_CHERI_DEPENDENCIES += linux-pam
+ifeq ($(BR2_PACKAGE_LINUX_PAM_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += linux-pam-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dpam=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dpam=false
 endif
 
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBFDISK),y)
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK),y)
 SYSTEMD_CHERI_CONF_OPTS += -Dfdisk=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dfdisk=false
 endif
 
-ifeq ($(BR2_PACKAGE_VALGRIND),y)
-SYSTEMD_CHERI_DEPENDENCIES += valgrind
+ifeq ($(BR2_PACKAGE_VALGRIND_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += valgrind-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dvalgrind=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dvalgrind=false
 endif
 
-ifeq ($(BR2_PACKAGE_XZ),y)
-SYSTEMD_CHERI_DEPENDENCIES += xz
+ifeq ($(BR2_PACKAGE_XZ_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += xz-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dxz=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dxz=false
 endif
 
-ifeq ($(BR2_PACKAGE_ZLIB),y)
-SYSTEMD_CHERI_DEPENDENCIES += zlib
+ifeq ($(BR2_PACKAGE_ZLIB_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += zlib-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dzlib=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dzlib=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBCURL),y)
-SYSTEMD_CHERI_DEPENDENCIES += libcurl
+ifeq ($(BR2_PACKAGE_LIBCURL_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libcurl-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dlibcurl=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dlibcurl=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-SYSTEMD_CHERI_DEPENDENCIES += libgcrypt
+ifeq ($(BR2_PACKAGE_LIBGCRYPT_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libgcrypt-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Ddefault-dnssec=allow-downgrade -Dgcrypt=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Ddefault-dnssec=no -Dgcrypt=false
 endif
 
-ifeq ($(BR2_PACKAGE_P11_KIT),y)
-SYSTEMD_CHERI_DEPENDENCIES += p11-kit
+ifeq ($(BR2_PACKAGE_P11_KIT_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += p11-kit-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dp11kit=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dp11kit=false
 endif
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-SYSTEMD_CHERI_DEPENDENCIES += openssl
+ifeq ($(BR2_PACKAGE_OPENSSL_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += openssl-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dopenssl=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dopenssl=false
 endif
 
-ifeq ($(BR2_PACKAGE_PCRE2),y)
-SYSTEMD_CHERI_DEPENDENCIES += pcre2
+ifeq ($(BR2_PACKAGE_PCRE2_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += pcre2-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dpcre2=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dpcre2=false
 endif
 
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBBLKID),y)
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_CHERI_LIBBLKID),y)
 SYSTEMD_CHERI_CONF_OPTS += -Dblkid=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dblkid=false
 endif
 
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_NOLOGIN),y)
-SYSTEMD_CHERI_CONF_OPTS += -Dnologin-path=/sbin/nologin
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_CHERI_NOLOGIN),y)
+SYSTEMD_CHERI_CONF_OPTS += -Dnologin-path=/cheri/usr/sbin/nologin
 else
-SYSTEMD_CHERI_CONF_OPTS += -Dnologin-path=/bin/false
+SYSTEMD_CHERI_CONF_OPTS += -Dnologin-path=/cheri/bin/false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_INITRD),y)
@@ -246,22 +250,22 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_JOURNAL_REMOTE),y)
 # remote also depends on libcurl, this is already added above.
-SYSTEMD_CHERI_DEPENDENCIES += libmicrohttpd
+SYSTEMD_CHERI_DEPENDENCIES += libmicrohttpd-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dremote=true -Dmicrohttpd=true
 SYSTEMD_CHERI_REMOTE_USER = systemd-journal-remote -1 systemd-journal-remote -1 * - - - systemd Journal Remote
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dremote=false -Dmicrohttpd=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBQRENCODE),y)
-SYSTEMD_CHERI_DEPENDENCIES += libqrencode
+ifeq ($(BR2_PACKAGE_LIBQRENCODE_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libqrencode-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dqrencode=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dqrencode=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
-SYSTEMD_CHERI_DEPENDENCIES += libselinux
+ifeq ($(BR2_PACKAGE_LIBSELINUX_CHERI),y)
+SYSTEMD_CHERI_DEPENDENCIES += libselinux-cheri
 SYSTEMD_CHERI_CONF_OPTS += -Dselinux=true
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dselinux=false
@@ -355,7 +359,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_HOMED),y)
 SYSTEMD_CHERI_CONF_OPTS += -Dhomed=true
-SYSTEMD_CHERI_DEPENDENCIES += cryptsetup openssl
+SYSTEMD_CHERI_DEPENDENCIES += cryptsetup-cheri openssl-cheri
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dhomed=false
 endif
@@ -386,7 +390,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_REPART),y)
 SYSTEMD_CHERI_CONF_OPTS += -Drepart=true
-SYSTEMD_CHERI_DEPENDENCIES += openssl
+SYSTEMD_CHERI_DEPENDENCIES += openssl-cheri
 else
 SYSTEMD_CHERI_CONF_OPTS += -Drepart=false
 endif
@@ -412,7 +416,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_POLKIT),y)
 SYSTEMD_CHERI_CONF_OPTS += -Dpolkit=true
-SYSTEMD_CHERI_DEPENDENCIES += polkit
+SYSTEMD_CHERI_DEPENDENCIES += polkit-cheri
 else
 SYSTEMD_CHERI_CONF_OPTS += -Dpolkit=false
 endif
@@ -443,12 +447,12 @@ else
 SYSTEMD_CHERI_CONF_OPTS += -Dnss-resolve=false -Dresolve=false
 endif
 
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
+ifeq ($(BR2_PACKAGE_GNUTLS_CHERI),y)
 SYSTEMD_CHERI_CONF_OPTS += -Ddns-over-tls=gnutls -Ddefault-dns-over-tls=opportunistic
-SYSTEMD_CHERI_DEPENDENCIES += gnutls
-else ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SYSTEMD_CHERI_DEPENDENCIES += gnutls-cheri
+else ifeq ($(BR2_PACKAGE_OPENSSL_CHERI),y)
 SYSTEMD_CHERI_CONF_OPTS += -Ddns-over-tls=openssl -Ddefault-dns-over-tls=opportunistic
-SYSTEMD_CHERI_DEPENDENCIES += openssl
+SYSTEMD_CHERI_DEPENDENCIES += openssl-cheri
 else
 SYSTEMD_CHERI_CONF_OPTS += -Ddns-over-tls=false -Ddefault-dns-over-tls=no
 endif
@@ -474,7 +478,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_CHERI_BOOT),y)
 SYSTEMD_CHERI_INSTALL_IMAGES = YES
-SYSTEMD_CHERI_DEPENDENCIES += gnu-efi
+SYSTEMD_CHERI_DEPENDENCIES += gnu-efi-cheri
 SYSTEMD_CHERI_CONF_OPTS += \
 	-Defi=true \
 	-Dgnu-efi=true \
@@ -504,6 +508,20 @@ SYSTEMD_CHERI_FALLBACK_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
 ifneq ($(SYSTEMD_CHERI_FALLBACK_HOSTNAME),)
 SYSTEMD_CHERI_CONF_OPTS += -Dfallback-hostname=$(SYSTEMD_CHERI_FALLBACK_HOSTNAME)
 endif
+
+define SYSTEMD_CHERI_LINK_LIBs
+	$(HOSTLN) -snf ../../../usr/lib/libudev.so.1.6.18 $(STAGING_DIR)/cheri/usr/lib/libudev.so.1.6.18
+	$(HOSTLN) -snf libudev.so.1.6.18 $(STAGING_DIR)/cheri/usr/lib/libudev.so.1
+	$(HOSTLN) -snf libudev.so.1 $(STAGING_DIR)/cheri/usr/lib/libudev.so
+	$(HOSTLN) -snf ../../../usr/lib/libsystemd.so.0.29.0 $(STAGING_DIR)/cheri/usr/lib/libsystemd.so.0.29.0
+	$(HOSTLN) -snf libsystemd.so.0.29.0 $(STAGING_DIR)/cheri/usr/lib/libsystemd.so.0
+	$(HOSTLN) -snf libsystemd.so.0 $(STAGING_DIR)/cheri/usr/lib/libsystemd.so
+	sed -e 's%libdir=/usr/lib%libdir=/cheri/usr/lib%g' \
+	    $(STAGING_DIR)/usr/lib/pkgconfig/libsystemd.pc \
+		> $(STAGING_DIR)/cheri/usr/lib/pkgconfig/libsystemd.pc
+endef
+
+SYSTEMD_CHERI_POST_INSTALL_STAGING_HOOKS += SYSTEMD_CHERI_LINK_LIBs
 
 define SYSTEMD_CHERI_INSTALL_INIT_HOOK
 	ln -fs multi-user.target \
@@ -705,7 +723,7 @@ HOST_SYSTEMD_CHERI_CONF_OPTS = \
 
 HOST_SYSTEMD_CHERI_DEPENDENCIES = \
 	$(BR2_COREUTILS_HOST_DEPENDENCY) \
-	host-util-linux \
+	host-util-linux-cheri \
 	host-patchelf \
 	host-libcap \
 	host-gperf

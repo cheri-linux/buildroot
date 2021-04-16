@@ -20,23 +20,23 @@ menuconfig BR2_PACKAGE_SYSTEMD_CHERI
 	depends on BR2_PACKAGE_SYSTEMD_CHERI_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS # kmod
-	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_TOOLCHAIN_CHERI_GLIBC
 	depends on BR2_TOOLCHAIN_HAS_SSP
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	depends on BR2_HOST_GCC_AT_LEAST_5 # host-systemd
 	select BR2_PACKAGE_HAS_UDEV
-	select BR2_PACKAGE_DBUS # runtime dependency only
-	select BR2_PACKAGE_LIBCAP
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBS
-	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
-	select BR2_PACKAGE_UTIL_LINUX_AGETTY
-	select BR2_PACKAGE_UTIL_LINUX_MOUNT
-	select BR2_PACKAGE_UTIL_LINUX_FSCK
-	select BR2_PACKAGE_KMOD
-	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # kmod-tools
-	select BR2_PACKAGE_KMOD_TOOLS
+	select BR2_PACKAGE_DBUS_CHERI # runtime dependency only
+	select BR2_PACKAGE_LIBCAP_CHERI
+	select BR2_PACKAGE_UTIL_LINUX_CHERI
+	select BR2_PACKAGE_UTIL_LINUX_LIBS_CHERI
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_AGETTY
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_MOUNT
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_FSCK
+	select BR2_PACKAGE_KMOD_CHERI
+	select BR2_PACKAGE_BUSYBOX_CHERI_SHOW_OTHERS # kmod-tools
+	select BR2_PACKAGE_KMOD_CHERI_TOOLS
 	select BR2_TARGET_TZ_INFO
 	select BR2_NEEDS_HOST_UTF8_LOCALE
 	select BR2_PACKAGE_HOST_SYSTEMD_CHERI # for systemctl preset-all, during target-finalize
@@ -87,7 +87,7 @@ menuconfig BR2_PACKAGE_SYSTEMD_CHERI
 if BR2_PACKAGE_SYSTEMD_CHERI
 
 config BR2_PACKAGE_PROVIDES_UDEV
-	default "systemd"
+	default "systemd-cheri"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_BOOT
 	bool "systemd-boot"
@@ -222,7 +222,7 @@ config BR2_PACKAGE_SYSTEMD_CHERI_HOMED
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12 # fscrypt_key
 	select BR2_PACKAGE_CRYPTSETUP
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
 	help
 	  systemd-homed is a system service that may be used to create,
 	  remove, change or inspect home directories.
@@ -366,7 +366,7 @@ config BR2_PACKAGE_SYSTEMD_CHERI_RANDOMSEED
 config BR2_PACKAGE_SYSTEMD_CHERI_REPART
 	bool "enable repart support"
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
 	help
 	  systemd-repart grows and adds partitions to a partition table,
 	  based on the configuration files described in repart.d.
