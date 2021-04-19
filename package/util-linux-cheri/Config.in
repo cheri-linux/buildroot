@@ -84,30 +84,34 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_CAL
 	help
 	  Display a calendar, or some part of it
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_CHFN_CHSH
-	bool "chfn/chsh"
-	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_USE_MMU # linux-pam
-	select BR2_PACKAGE_LINUX_PAM
-	help
-	  Change login shell, real user name and information
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_CHFN_CHSH
+#	bool "chfn/chsh"
+#	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
+#	depends on !BR2_STATIC_LIBS
+#	depends on BR2_USE_MMU # linux-pam
+#	select BR2_PACKAGE_LINUX_PAM
+#	help
+#	  Change login shell, real user name and information
+#
+#comment "chfn/chsh needs a toolchain w/ wchar, locale, dynamic library"
+#	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+#		|| BR2_STATIC_LIBS
 
-comment "chfn/chsh needs a toolchain w/ wchar, locale, dynamic library"
-	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS
+comment "chfn/chsh has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_CHMEM
 	bool "chmem"
 	help
 	  Sets a particular size or range of memory online or offline
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_CRAMFS
-	bool "cramfs utilities"
-	select BR2_PACKAGE_ZLIB
-	help
-	  Utilities for compressed ROM file system (fsck.cramfs,
-	  mkfs.cramfs)
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_CRAMFS
+#	bool "cramfs utilities"
+#	select BR2_PACKAGE_ZLIB
+#	help
+#	  Utilities for compressed ROM file system (fsck.cramfs,
+#	  mkfs.cramfs)
+
+comment "cramfs utilities has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_EJECT
 	bool "eject"
@@ -177,20 +181,22 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_LOGGER
 	help
 	  Enter messages into the system log
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_LOGIN
-	bool "login"
-	depends on BR2_ENABLE_LOCALE # linux-pam
-	depends on BR2_USE_WCHAR # linux-pam
-	depends on !BR2_STATIC_LIBS # linux-pam
-	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
-	depends on BR2_USE_MMU # fork(), linux-pam
-	select BR2_PACKAGE_LINUX_PAM
-	help
-	  Begin a session on the system
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_LOGIN
+#	bool "login"
+#	depends on BR2_ENABLE_LOCALE # linux-pam
+#	depends on BR2_USE_WCHAR # linux-pam
+#	depends on !BR2_STATIC_LIBS # linux-pam
+#	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+#	depends on BR2_USE_MMU # fork(), linux-pam
+#	select BR2_PACKAGE_LINUX_PAM
+#	help
+#	  Begin a session on the system
+#
+#comment "login needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+#	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+#		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
-comment "login needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
-	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+comment "login has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_LOSETUP
 	bool "losetup"
@@ -224,12 +230,14 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_MINIX
 	help
 	  Minix filesystem support
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_MORE
-	bool "more"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_NCURSES
-	help
-	  File perusal filter for crt viewing
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_MORE
+#	bool "more"
+#	depends on BR2_USE_MMU # fork()
+#	select BR2_PACKAGE_NCURSES
+#	help
+#	  File perusal filter for crt viewing
+
+comment "more has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_MOUNT
 	bool "mount/umount"
@@ -269,12 +277,14 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_NSENTER
 comment "nsenter needs a toolchain w/ headers >= 3.0"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_PG
-	bool "pg"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_NCURSES
-	help
-	  Browse pagewise through text files
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_PG
+#	bool "pg"
+#	depends on BR2_USE_MMU # fork()
+#	select BR2_PACKAGE_NCURSES
+#	help
+#	  Browse pagewise through text files
+
+comment "pg has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_PARTX
 	bool "partition utilities"
@@ -309,52 +319,60 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_RFKILL
 	  implementation is based upon, and backward compatible with,
 	  the original rfkill from Johannes Berg and Marcel Holtmann.
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_RUNUSER
-	bool "runuser"
-	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
-	depends on !BR2_STATIC_LIBS
-	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
-	depends on BR2_USE_MMU # fork(), linux-pam
-	select BR2_PACKAGE_LINUX_PAM
-	help
-	  Run a command with substitute user and group ID (does not need
-	  to ask for a password, because it may be executed by the root
-	  user only)
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_RUNUSER
+#	bool "runuser"
+#	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
+#	depends on !BR2_STATIC_LIBS
+#	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+#	depends on BR2_USE_MMU # fork(), linux-pam
+#	select BR2_PACKAGE_LINUX_PAM
+#	help
+#	  Run a command with substitute user and group ID (does not need
+#	  to ask for a password, because it may be executed by the root
+#	  user only)
+#
+#comment "runuser needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+#	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+#		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
-comment "runuser needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
-	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+comment "runuser has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_SCHEDUTILS
 	bool "scheduling utilities"
 	help
 	  Scheduling utilities (chrt, ionice, taskset)
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_SETPRIV
-	bool "setpriv"
-	select BR2_PACKAGE_LIBCAP_NG
-	help
-	  Run a program with different Linux privilege settings
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_SETPRIV
+#	bool "setpriv"
+#	select BR2_PACKAGE_LIBCAP_NG
+#	help
+#	  Run a program with different Linux privilege settings
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_SETTERM
-	bool "setterm"
-	select BR2_PACKAGE_NCURSES
-	help
-	  Set terminal attributes
+comment "setpriv has uncherified dependencies"
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_SU
-	bool "su"
-	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
-	depends on !BR2_STATIC_LIBS
-	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
-	depends on BR2_USE_MMU # fork(), linux-pam
-	select BR2_PACKAGE_LINUX_PAM
-	help
-	  Run a command with substitute user and group ID
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_SETTERM
+#	bool "setterm"
+#	select BR2_PACKAGE_NCURSES
+#	help
+#	  Set terminal attributes
 
-comment "su needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
-	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+comment "setterm has uncherified dependencies"
+
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_SU
+#	bool "su"
+#	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
+#	depends on !BR2_STATIC_LIBS
+#	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+#	depends on BR2_USE_MMU # fork(), linux-pam
+#	select BR2_PACKAGE_LINUX_PAM
+#	help
+#	  Run a command with substitute user and group ID
+#
+#comment "su needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+#	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+#		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+
+comment "su has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_SULOGIN
 	bool "sulogin"
@@ -368,17 +386,21 @@ config BR2_PACKAGE_UTIL_LINUX_CHERI_SWITCH_ROOT
 	help
 	  Switch to another filesystem as the root of the mount tree
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_TUNELP
-	bool "tunelp"
-	select BR2_PACKAGE_NCURSES
-	help
-	  Set various parameters for the lp device
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_TUNELP
+#	bool "tunelp"
+#	select BR2_PACKAGE_NCURSES
+#	help
+#	  Set various parameters for the lp device
 
-config BR2_PACKAGE_UTIL_LINUX_CHERI_UL
-	bool "ul"
-	select BR2_PACKAGE_NCURSES
-	help
-	  Do underlining
+comment "tunelp has uncherified dependencies"
+
+#config BR2_PACKAGE_UTIL_LINUX_CHERI_UL
+#	bool "ul"
+#	select BR2_PACKAGE_NCURSES
+#	help
+#	  Do underlining
+
+comment "ul has uncherified dependencies"
 
 config BR2_PACKAGE_UTIL_LINUX_CHERI_UNSHARE
 	bool "unshare"
