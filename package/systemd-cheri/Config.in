@@ -89,27 +89,29 @@ if BR2_PACKAGE_SYSTEMD_CHERI
 config BR2_PACKAGE_PROVIDES_UDEV
 	default "systemd-cheri"
 
-config BR2_PACKAGE_SYSTEMD_CHERI_BOOT
-	bool "systemd-boot"
-	depends on BR2_i386 || BR2_x86_64
-	select BR2_PACKAGE_GNU_EFI
-	help
-	  systemd-boot is a simple UEFI boot manager which executes
-	  configured EFI images. The default entry is selected by a
-	  configured pattern (glob) or an on-screen menu.
+#config BR2_PACKAGE_SYSTEMD_CHERI_BOOT
+#	bool "systemd-boot"
+#	depends on BR2_i386 || BR2_x86_64
+#	select BR2_PACKAGE_GNU_EFI
+#	help
+#	  systemd-boot is a simple UEFI boot manager which executes
+#	  configured EFI images. The default entry is selected by a
+#	  configured pattern (glob) or an on-screen menu.
+#
+#	  systemd-boot operates on the EFI System Partition (ESP)
+#	  only. Configuration file fragments, kernels, initrds, other
+#	  EFI images need to reside on the ESP. Linux kernels need to
+#	  be built with CONFIG_EFI_STUB to be able to be directly
+#	  executed as an EFI image.
+#
+#	  See the Grub2 help text for details on preparing an EFI
+#	  capable disk image using systemd-boot: the instructions are
+#	  exactly the same, except that the systemd-boot configuration
+#	  files will be located in /loader/ inside the EFI partition.
+#
+#	  https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/
 
-	  systemd-boot operates on the EFI System Partition (ESP)
-	  only. Configuration file fragments, kernels, initrds, other
-	  EFI images need to reside on the ESP. Linux kernels need to
-	  be built with CONFIG_EFI_STUB to be able to be directly
-	  executed as an EFI image.
-
-	  See the Grub2 help text for details on preparing an EFI
-	  capable disk image using systemd-boot: the instructions are
-	  exactly the same, except that the systemd-boot configuration
-	  files will be located in /loader/ inside the EFI partition.
-
-	  https://www.freedesktop.org/wiki/Software/systemd/systemd-boot/
+comment "systemd-boot has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_INITRD
 	bool "Services for booting from initrd"
@@ -141,25 +143,27 @@ config BR2_PACKAGE_SYSTEMD_CHERI_BOOT_EFI_ARCH
 	default "x64"   if BR2_x86_64
 	depends on BR2_PACKAGE_SYSTEMD_CHERI_BOOT
 
-config BR2_PACKAGE_SYSTEMD_CHERI_JOURNAL_REMOTE
-	bool "enable journal remote tools"
-	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBMICROHTTPD
-	help
-	  journal remote functionality adds three tools:
+#config BR2_PACKAGE_SYSTEMD_CHERI_JOURNAL_REMOTE
+#	bool "enable journal remote tools"
+#	select BR2_PACKAGE_LIBCURL
+#	select BR2_PACKAGE_LIBMICROHTTPD
+#	help
+#	  journal remote functionality adds three tools:
+#
+#	  systemd-journal-gatewayd serves journal events over the
+#	  network.
+#
+#	  systemd-journal-remote is a command to receive serialized
+#	  journal events and store them to journal files.
+#
+#	  systemd-journal-upload will upload journal entries to the
+#	  URL specified with --url=.
+#
+#	  https://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
+#	  https://www.freedesktop.org/software/systemd/man/systemd-journal-remote.service.html
+#	  https://www.freedesktop.org/software/systemd/man/systemd-journal-upload.html
 
-	  systemd-journal-gatewayd serves journal events over the
-	  network.
-
-	  systemd-journal-remote is a command to receive serialized
-	  journal events and store them to journal files.
-
-	  systemd-journal-upload will upload journal entries to the
-	  URL specified with --url=.
-
-	  https://www.freedesktop.org/software/systemd/man/systemd-journal-gatewayd.service.html
-	  https://www.freedesktop.org/software/systemd/man/systemd-journal-remote.service.html
-	  https://www.freedesktop.org/software/systemd/man/systemd-journal-upload.html
+comment "journal remote tools have uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_BACKLIGHT
 	bool "enable backlight support"
@@ -213,27 +217,29 @@ config BR2_PACKAGE_SYSTEMD_CHERI_HIBERNATE
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
 
-config BR2_PACKAGE_SYSTEMD_CHERI_HOMED
-	bool "enable home daemon"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # cryptsetup -> lvm2
-	depends on BR2_USE_MMU # cryptsetup -> lvm2
-	depends on !BR2_STATIC_LIBS # cryptsetup -> lvm2
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # cryptsetup -> json-c
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12 # fscrypt_key
-	select BR2_PACKAGE_CRYPTSETUP
-	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
-	help
-	  systemd-homed is a system service that may be used to create,
-	  remove, change or inspect home directories.
+#config BR2_PACKAGE_SYSTEMD_CHERI_HOMED
+#	bool "enable home daemon"
+#	depends on BR2_TOOLCHAIN_HAS_THREADS # cryptsetup -> lvm2
+#	depends on BR2_USE_MMU # cryptsetup -> lvm2
+#	depends on !BR2_STATIC_LIBS # cryptsetup -> lvm2
+#	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # cryptsetup -> json-c
+#	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12 # fscrypt_key
+#	select BR2_PACKAGE_CRYPTSETUP
+#	select BR2_PACKAGE_OPENSSL
+#	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
+#	help
+#	  systemd-homed is a system service that may be used to create,
+#	  remove, change or inspect home directories.
+#
+#	  https://www.freedesktop.org/software/systemd/man/systemd-homed.service.html
+#
+#comment "homed support needs a toolchain w/ threads, dynamic library, kernel headers >= 4.12"
+#	depends on BR2_USE_MMU
+#	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+#	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
+#		BR2_STATIC_LIBS || BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
 
-	  https://www.freedesktop.org/software/systemd/man/systemd-homed.service.html
-
-comment "homed support needs a toolchain w/ threads, dynamic library, kernel headers >= 4.12"
-	depends on BR2_USE_MMU
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_STATIC_LIBS || BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+comment "home daemon has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_HOSTNAMED
 	bool "enable hostname daemon"
@@ -255,19 +261,21 @@ config BR2_PACKAGE_SYSTEMD_CHERI_HWDB
 
 	  https://www.freedesktop.org/software/systemd/man/hwdb.html
 
-config BR2_PACKAGE_SYSTEMD_CHERI_IMPORTD
-	bool "enable import daemon"
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
-	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBGCRYPT
-	select BR2_PACKAGE_XZ
-	select BR2_PACKAGE_ZLIB
-	help
-	  systemd-importd is a system service that manages virtual
-	  machine and container images for systemd-machined and
-	  machinectl.
+#config BR2_PACKAGE_SYSTEMD_CHERI_IMPORTD
+#	bool "enable import daemon"
+#	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
+#	select BR2_PACKAGE_LIBCURL
+#	select BR2_PACKAGE_LIBGCRYPT
+#	select BR2_PACKAGE_XZ
+#	select BR2_PACKAGE_ZLIB
+#	help
+#	  systemd-importd is a system service that manages virtual
+#	  machine and container images for systemd-machined and
+#	  machinectl.
+#
+#	  http://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Transfer%20Commands
 
-	  http://www.freedesktop.org/software/systemd/man/machinectl.html#Image%20Transfer%20Commands
+comment "import daemon has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_LOCALED
 	bool "enable locale daemon"
@@ -318,30 +326,32 @@ config BR2_PACKAGE_SYSTEMD_CHERI_NETWORKD
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-networkd.html
 
-config BR2_PACKAGE_SYSTEMD_CHERI_POLKIT
-	bool "enable polkit support"
-	depends on BR2_HOST_GCC_AT_LEAST_4_9 # polkit
-	depends on BR2_INSTALL_LIBSTDCPP # polkit
-	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS # polkit
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # polkit
-	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # polkit
-	depends on BR2_USE_WCHAR # libglib2
-	select BR2_PACKAGE_POLKIT
-	help
-	  If enabled, systemd is built with polkit support and policy
-	  files for its services are generated and installed. It is
-	  useful for allowing unprivileged processes to speak to
-	  systemd's many privileged processes.
+#config BR2_PACKAGE_SYSTEMD_CHERI_POLKIT
+#	bool "enable polkit support"
+#	depends on BR2_HOST_GCC_AT_LEAST_4_9 # polkit
+#	depends on BR2_INSTALL_LIBSTDCPP # polkit
+#	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS # polkit
+#	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # polkit
+#	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # polkit
+#	depends on BR2_USE_WCHAR # libglib2
+#	select BR2_PACKAGE_POLKIT
+#	help
+#	  If enabled, systemd is built with polkit support and policy
+#	  files for its services are generated and installed. It is
+#	  useful for allowing unprivileged processes to speak to
+#	  systemd's many privileged processes.
+#
+#	  http://wiki.freedesktop.org/www/Software/polkit/
+#
+#comment "polkit support needs a toolchain with C++, wchar, NPTL, gcc >= 4.9"
+#	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS
+#	depends on !BR2_INSTALL_LIBSTDCPP || \
+#		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+#		!BR2_HOST_GCC_AT_LEAST_4_9 || \
+#		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || \
+#		!BR2_USE_WCHAR
 
-	  http://wiki.freedesktop.org/www/Software/polkit/
-
-comment "polkit support needs a toolchain with C++, wchar, NPTL, gcc >= 4.9"
-	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS
-	depends on !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
-		!BR2_HOST_GCC_AT_LEAST_4_9 || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || \
-		!BR2_USE_WCHAR
+comment "polkit support has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_QUOTACHECK
 	bool "enable quotacheck tools"
@@ -363,15 +373,17 @@ config BR2_PACKAGE_SYSTEMD_CHERI_RANDOMSEED
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-random-seed.service.html
 
-config BR2_PACKAGE_SYSTEMD_CHERI_REPART
-	bool "enable repart support"
-	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
-	help
-	  systemd-repart grows and adds partitions to a partition table,
-	  based on the configuration files described in repart.d.
+#config BR2_PACKAGE_SYSTEMD_CHERI_REPART
+#	bool "enable repart support"
+#	select BR2_PACKAGE_OPENSSL
+#	select BR2_PACKAGE_UTIL_LINUX_CHERI_LIBFDISK
+#	help
+#	  systemd-repart grows and adds partitions to a partition table,
+#	  based on the configuration files described in repart.d.
+#
+#	  https://www.freedesktop.org/software/systemd/man/systemd-repart.html
 
-	  https://www.freedesktop.org/software/systemd/man/systemd-repart.html
+comment "repart support has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_RESOLVED
 	bool "enable resolve daemon"
@@ -392,19 +404,21 @@ config BR2_PACKAGE_SYSTEMD_CHERI_RFKILL
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-rfkill@.service.html
 
-config BR2_PACKAGE_SYSTEMD_CHERI_SMACK_SUPPORT
-	bool "enable SMACK support"
-	select BR2_PACKAGE_ATTR
-	select BR2_PACKAGE_SMACK
-	help
-	  Enable support for SMACK, the Simple Mandatory Access
-	  Control Kernel, a minimal approach to Access Control
-	  implemented as a kernel LSM.
+#config BR2_PACKAGE_SYSTEMD_CHERI_SMACK_SUPPORT
+#	bool "enable SMACK support"
+#	select BR2_PACKAGE_ATTR
+#	select BR2_PACKAGE_SMACK
+#	help
+#	  Enable support for SMACK, the Simple Mandatory Access
+#	  Control Kernel, a minimal approach to Access Control
+#	  implemented as a kernel LSM.
+#
+#	  This feature requires a kernel >= 3.8.
+#
+#	  When this feature is enabled, Systemd mounts smackfs and
+#	  manages security labels for sockets.
 
-	  This feature requires a kernel >= 3.8.
-
-	  When this feature is enabled, Systemd mounts smackfs and
-	  manages security labels for sockets.
+comment "SMACK support has uncherified dependencies"
 
 config BR2_PACKAGE_SYSTEMD_CHERI_SYSUSERS
 	bool "enable sysusers support"
