@@ -58,14 +58,22 @@ for x ; do
 	case "$x" in
 	crtend*.o)
 		#set -- "$@" $($cc -print-file-name=$x)
-		msg "OPTION REPLACED: $x"
-		set -- "$@" "${libc_lib}/linux/clang_rt.crtend-${ARCH}.o"
+		if [ "$libc" = "glibc-cheri" ]; then
+			msg "OPTION REPLACED: $x"
+			set -- "$@" "${libc_lib}/linux/clang_rt.crtend-${ARCH}.o"
+		else
+			msg "OPTION REMOVED: $x"
+		fi
 		skip=1
 		;;
 	crtbegin*.o)
 		#set -- "$@" $($cc -print-file-name=$x)
-		msg "OPTION REPLACED: $x"
-		set -- "$@" "${libc_lib}/linux/clang_rt.crtbegin-${ARCH}.o"
+		if [ "$libc" = "glibc-cheri" ]; then
+			msg "OPTION REPLACED: $x"
+			set -- "$@" "${libc_lib}/linux/clang_rt.crtbegin-${ARCH}.o"
+		else
+			msg "OPTION REMOVED: $x"
+		fi
 		skip=1
 		;;
 	Scrt*.o|crt*.o|-lc)
