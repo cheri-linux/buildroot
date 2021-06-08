@@ -1,5 +1,7 @@
 menu "Target packages"
 
+	source "package/juliet/Config.in"
+	source "package/juliet-cheri/Config.in"
 	source "package/busybox/Config.in"
 	source "package/busybox-cheri/Config.in"
 	source "package/skeleton/Config.in"

@@ -1,0 +1,362 @@
+menuconfig BR2_PACKAGE_JULIET
+	bool "Juliet Test Suite for testing"
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_BUSYBOX_CHERI
+	select BR2_PACKAGE_JULIET_CWE_121
+
+if BR2_PACKAGE_JULIET
+
+config BR2_PACKAGE_JULIET_CWE_15
+	bool "CWE15 External Control of System or Configuration Setting"
+
+config BR2_PACKAGE_JULIET_CWE_23
+	bool "CWE23 Relative Path Traversal"
+
+config BR2_PACKAGE_JULIET_CWE_36
+	bool "CWE36 Absolute Path Traversal"
+
+config BR2_PACKAGE_JULIET_CWE_78
+	bool "CWE78 OS Command Injection"
+
+config BR2_PACKAGE_JULIET_CWE_90
+	bool "CWE90 LDAP Injection"
+
+config BR2_PACKAGE_JULIET_CWE_114
+	bool "CWE114 Process Control"
+
+config BR2_PACKAGE_JULIET_CWE_121
+	bool "CWE121 Stack Based Buffer Overflow"
+
+config BR2_PACKAGE_JULIET_CWE_122
+	bool "CWE122 Heap Based Buffer Overflow"
+
+config BR2_PACKAGE_JULIET_CWE_123
+	bool "CWE123 Write What Where Condition"
+
+config BR2_PACKAGE_JULIET_CWE_124
+	bool "CWE124 Buffer Underwrite"
+
+config BR2_PACKAGE_JULIET_CWE_126
+	bool "CWE126 Buffer Overread"
+
+config BR2_PACKAGE_JULIET_CWE_127
+	bool "CWE127 Buffer Underread"
+
+config BR2_PACKAGE_JULIET_CWE_134
+	bool "CWE134 Uncontrolled Format String"
+
+config BR2_PACKAGE_JULIET_CWE_176
+	bool "CWE176 Improper Handling of Unicode Encoding"
+
+config BR2_PACKAGE_JULIET_CWE_188
+	bool "CWE188 Reliance on Data Memory Layout"
+
+config BR2_PACKAGE_JULIET_CWE_190
+	bool "CWE190 Integer Overflow"
+
+config BR2_PACKAGE_JULIET_CWE_191
+	bool "CWE191 Integer Underflow"
+
+config BR2_PACKAGE_JULIET_CWE_194
+	bool "CWE194 Unexpected Sign Extension"
+
+config BR2_PACKAGE_JULIET_CWE_195
+	bool "CWE195 Signed to Unsigned Conversion Error"
+
+config BR2_PACKAGE_JULIET_CWE_196
+	bool "CWE196 Unsigned to Signed Conversion Error"
+
+config BR2_PACKAGE_JULIET_CWE_197
+	bool "CWE197 Numeric Truncation Error"
+
+config BR2_PACKAGE_JULIET_CWE_222
+	bool "CWE222 Truncation of Security Relevant Information"
+
+config BR2_PACKAGE_JULIET_CWE_223
+	bool "CWE223 Omission of Security Relevant Information"
+
+config BR2_PACKAGE_JULIET_CWE_226
+	bool "CWE226 Sensitive Information Uncleared Before Release"
+
+config BR2_PACKAGE_JULIET_CWE_242
+	bool "CWE242 Use of Inherently Dangerous Function"
+
+config BR2_PACKAGE_JULIET_CWE_244
+	bool "CWE244 Heap Inspection"
+
+config BR2_PACKAGE_JULIET_CWE_247
+	bool "CWE247 Reliance on DNS Lookups in Security Decision"
+
+config BR2_PACKAGE_JULIET_CWE_252
+	bool "CWE252 Unchecked Return Value"
+
+config BR2_PACKAGE_JULIET_CWE_253
+	bool "CWE253 Incorrect Check of Function Return Value"
+
+config BR2_PACKAGE_JULIET_CWE_256
+	bool "CWE256 Plaintext Storage of Password"
+
+config BR2_PACKAGE_JULIET_CWE_259
+	bool "CWE259 Hard Coded Password"
+
+config BR2_PACKAGE_JULIET_CWE_272
+	bool "CWE272 Least Privilege Violation"
+
+config BR2_PACKAGE_JULIET_CWE_273
+	bool "CWE273 Improper Check for Dropped Privileges"
+
+config BR2_PACKAGE_JULIET_CWE_284
+	bool "CWE284 Improper Access Control"
+
+config BR2_PACKAGE_JULIET_CWE_319
+	bool "CWE319 Cleartext Tx Sensitive Info"
+
+config BR2_PACKAGE_JULIET_CWE_321
+	bool "CWE321 Hard Coded Cryptographic Key"
+
+config BR2_PACKAGE_JULIET_CWE_325
+	bool "CWE325 Missing Required Cryptographic Step"
+
+config BR2_PACKAGE_JULIET_CWE_327
+	bool "CWE327 Use Broken Crypto"
+
+config BR2_PACKAGE_JULIET_CWE_328
+	bool "CWE328 Reversible One Way Hash"
+
+config BR2_PACKAGE_JULIET_CWE_338
+	bool "CWE338 Weak PRNG"
+
+config BR2_PACKAGE_JULIET_CWE_364
+	bool "CWE364 Signal Handler Race Condition"
+
+config BR2_PACKAGE_JULIET_CWE_366
+	bool "CWE366 Race Condition Within Thread"
+
+config BR2_PACKAGE_JULIET_CWE_367
+	bool "CWE367 TOC TOU"
+
+config BR2_PACKAGE_JULIET_CWE_369
+	bool "CWE369 Divide by Zero"
+
+config BR2_PACKAGE_JULIET_CWE_377
+	bool "CWE377 Insecure Temporary File"
+
+config BR2_PACKAGE_JULIET_CWE_390
+	bool "CWE390 Error Without Action"
+
+config BR2_PACKAGE_JULIET_CWE_391
+	bool "CWE391 Unchecked Error Condition"
+
+config BR2_PACKAGE_JULIET_CWE_396
+	bool "CWE396 Catch Generic Exception"
+
+config BR2_PACKAGE_JULIET_CWE_397
+	bool "CWE397 Throw Generic Exception"
+
+config BR2_PACKAGE_JULIET_CWE_398
+	bool "CWE398 Poor Code Quality"
+
+config BR2_PACKAGE_JULIET_CWE_400
+	bool "CWE400 Resource Exhaustion"
+
+config BR2_PACKAGE_JULIET_CWE_401
+	bool "CWE401 Memory Leak"
+
+config BR2_PACKAGE_JULIET_CWE_404
+	bool "CWE404 Improper Resource Shutdown"
+
+config BR2_PACKAGE_JULIET_CWE_415
+	bool "CWE415 Double Free"
+
+config BR2_PACKAGE_JULIET_CWE_416
+	bool "CWE416 Use After Free"
+
+config BR2_PACKAGE_JULIET_CWE_426
+	bool "CWE426 Untrusted Search Path"
+
+config BR2_PACKAGE_JULIET_CWE_427
+	bool "CWE427 Uncontrolled Search Path Element"
+
+config BR2_PACKAGE_JULIET_CWE_440
+	bool "CWE440 Expected Behavior Violation"
+
+config BR2_PACKAGE_JULIET_CWE_457
+	bool "CWE457 Use of Uninitialized Variable"
+
+config BR2_PACKAGE_JULIET_CWE_459
+	bool "CWE459 Incomplete Cleanup"
+
+config BR2_PACKAGE_JULIET_CWE_464
+	bool "CWE464 Addition of Data Structure Sentinel"
+
+config BR2_PACKAGE_JULIET_CWE_467
+	bool "CWE467 Use of sizeof on Pointer Type"
+
+config BR2_PACKAGE_JULIET_CWE_468
+	bool "CWE468 Incorrect Pointer Scaling"
+
+config BR2_PACKAGE_JULIET_CWE_469
+	bool "CWE469 Use of Pointer Subtraction to Determine Size"
+
+config BR2_PACKAGE_JULIET_CWE_475
+	bool "CWE475 Undefined Behavior for Input to API"
+
+config BR2_PACKAGE_JULIET_CWE_476
+	bool "CWE476 NULL Pointer Dereference"
+
+config BR2_PACKAGE_JULIET_CWE_478
+	bool "CWE478 Missing Default Case in Switch"
+
+config BR2_PACKAGE_JULIET_CWE_479
+	bool "CWE479 Signal Handler Use of Non Reentrant Function"
+
+config BR2_PACKAGE_JULIET_CWE_480
+	bool "CWE480 Use of Incorrect Operator"
+
+config BR2_PACKAGE_JULIET_CWE_481
+	bool "CWE481 Assigning Instead of Comparing"
+
+config BR2_PACKAGE_JULIET_CWE_482
+	bool "CWE482 Comparing Instead of Assigning"
+
+config BR2_PACKAGE_JULIET_CWE_483
+	bool "CWE483 Incorrect Block Delimitation"
+
+config BR2_PACKAGE_JULIET_CWE_484
+	bool "CWE484 Omitted Break Statement in Switch"
+
+config BR2_PACKAGE_JULIET_CWE_500
+	bool "CWE500 Public Static Field Not Final"
+
+config BR2_PACKAGE_JULIET_CWE_506
+	bool "CWE506 Embedded Malicious Code"
+
+config BR2_PACKAGE_JULIET_CWE_510
+	bool "CWE510 Trapdoor"
+
+config BR2_PACKAGE_JULIET_CWE_511
+	bool "CWE511 Logic Time Bomb"
+
+config BR2_PACKAGE_JULIET_CWE_526
+	bool "CWE526 Info Exposure Environment Variables"
+
+config BR2_PACKAGE_JULIET_CWE_534
+	bool "CWE534 Info Exposure Debug Log"
+
+config BR2_PACKAGE_JULIET_CWE_535
+	bool "CWE535 Info Exposure Shell Error"
+
+config BR2_PACKAGE_JULIET_CWE_546
+	bool "CWE546 Suspicious Comment"
+
+config BR2_PACKAGE_JULIET_CWE_561
+	bool "CWE561 Dead Code"
+
+config BR2_PACKAGE_JULIET_CWE_562
+	bool "CWE562 Return of Stack Variable Address"
+
+config BR2_PACKAGE_JULIET_CWE_563
+	bool "CWE563 Unused Variable"
+
+config BR2_PACKAGE_JULIET_CWE_570
+	bool "CWE570 Expression Always False"
+
+config BR2_PACKAGE_JULIET_CWE_571
+	bool "CWE571 Expression Always True"
+
+config BR2_PACKAGE_JULIET_CWE_587
+	bool "CWE587 Assignment of Fixed Address to Pointer"
+
+config BR2_PACKAGE_JULIET_CWE_588
+	bool "CWE588 Attempt to Access Child of Non Structure Pointer"
+
+config BR2_PACKAGE_JULIET_CWE_590
+	bool "CWE590 Free Memory Not on Heap"
+
+config BR2_PACKAGE_JULIET_CWE_591
+	bool "CWE591 Sensitive Data Storage in Improperly Locked Memory"
+
+config BR2_PACKAGE_JULIET_CWE_605
+	bool "CWE605 Multiple Binds Same Port"
+
+config BR2_PACKAGE_JULIET_CWE_606
+	bool "CWE606 Unchecked Loop Condition"
+
+config BR2_PACKAGE_JULIET_CWE_615
+	bool "CWE615 Info Exposure by Comment"
+
+config BR2_PACKAGE_JULIET_CWE_617
+	bool "CWE617 Reachable Assertion"
+
+config BR2_PACKAGE_JULIET_CWE_620
+	bool "CWE620 Unverified Password Change"
+
+config BR2_PACKAGE_JULIET_CWE_665
+	bool "CWE665 Improper Initialization"
+
+config BR2_PACKAGE_JULIET_CWE_666
+	bool "CWE666 Operation on Resource in Wrong Phase of Lifetime"
+
+config BR2_PACKAGE_JULIET_CWE_667
+	bool "CWE667 Improper Locking"
+
+config BR2_PACKAGE_JULIET_CWE_672
+	bool "CWE672 Operation on Resource After Expiration or Release"
+
+config BR2_PACKAGE_JULIET_CWE_674
+	bool "CWE674 Uncontrolled Recursion"
+
+config BR2_PACKAGE_JULIET_CWE_675
+	bool "CWE675 Duplicate Operations on Resource"
+
+config BR2_PACKAGE_JULIET_CWE_676
+	bool "CWE676 Use of Potentially Dangerous Function"
+
+config BR2_PACKAGE_JULIET_CWE_680
+	bool "CWE680 Integer Overflow to Buffer Overflow"
+
+config BR2_PACKAGE_JULIET_CWE_681
+	bool "CWE681 Incorrect Conversion Between Numeric Types"
+
+config BR2_PACKAGE_JULIET_CWE_685
+	bool "CWE685 Function Call With Incorrect Number of Arguments"
+
+config BR2_PACKAGE_JULIET_CWE_688
+	bool "CWE688 Function Call With Incorrect Variable or Reference as Argument"
+
+config BR2_PACKAGE_JULIET_CWE_690
+	bool "CWE690 NULL Deref From Return"
+
+config BR2_PACKAGE_JULIET_CWE_758
+	bool "CWE758 Undefined Behavior"
+
+config BR2_PACKAGE_JULIET_CWE_761
+	bool "CWE761 Free Pointer Not at Start of Buffer"
+
+config BR2_PACKAGE_JULIET_CWE_762
+	bool "CWE762 Mismatched Memory Management Routines"
+
+config BR2_PACKAGE_JULIET_CWE_773
+	bool "CWE773 Missing Reference to Active File Descriptor or Handle"
+
+config BR2_PACKAGE_JULIET_CWE_775
+	bool "CWE775 Missing Release of File Descriptor or Handle"
+
+config BR2_PACKAGE_JULIET_CWE_780
+	bool "CWE780 Use of RSA Algorithm Without OAEP"
+
+config BR2_PACKAGE_JULIET_CWE_785
+	bool "CWE785 Path Manipulation Function Without Max Sized Buffer"
+
+config BR2_PACKAGE_JULIET_CWE_789
+	bool "CWE789 Uncontrolled Mem Alloc"
+
+config BR2_PACKAGE_JULIET_CWE_832
+	bool "CWE832 Unlock of Resource That is Not Locked"
+
+config BR2_PACKAGE_JULIET_CWE_835
+	bool "CWE835 Infinite Loop"
+
+config BR2_PACKAGE_JULIET_CWE_843
+	bool "CWE843 Type Confusion"
+
+endif
