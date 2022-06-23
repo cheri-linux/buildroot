@@ -16,6 +16,10 @@ if BR2_LINUX_KERNEL
 config BR2_LINUX_NEEDS_MODULES
 	bool
 
+config BR2_LINUX_KERNEL_CLANG
+	bool "Compile kernel with clang"
+	default n
+	select BR2_PACKAGE_HOST_LLVM_PROJECT
 #
 # Version selection. We provide the choice between:
 #

@@ -25,4 +25,6 @@ ifeq ($(BR2_arc)$(BR2_STATIC_LIBS),yy)
 HTOP_CONF_ENV += ac_cv_header_execinfo_h=no
 endif
 
+HTOP_CONF_ENV += CFLAGS="$(HOST_CFLAGS) -D_GNU_SOURCE"
+
 $(eval $(autotools-package))

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MUSL_CHERI_HEADERS
+	bool "MUSL CHERI HEADERS"
+	default n
+	help
+	  https://www.musl-libc.org/

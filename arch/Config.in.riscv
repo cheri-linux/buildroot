@@ -18,6 +18,9 @@ config BR2_RISCV_ISA_RVD
 config BR2_RISCV_ISA_RVC
 	bool
 
+config BR2_RISCV_ISA_CHERI
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	default BR2_riscv_g
@@ -129,6 +132,11 @@ config BR2_GCC_TARGET_ABI
 
 config BR2_READELF_ARCH_NAME
 	default "RISC-V"
+
+config BR2_RISCV_CHERI
+	bool "Cheri Instructions (C)"
+	depends on BR2_ARCH_IS_64
+	select BR2_RISCV_ISA_CHERI
 
 # vim: ft=kconfig
 # -*- mode:kconfig; -*-

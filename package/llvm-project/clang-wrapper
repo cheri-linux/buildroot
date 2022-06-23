@@ -1,0 +1,87 @@
+#!/bin/bash
+
+#env >>/tmp/clang-env.txt
+
+msg() {
+    #echo "$@" >&2
+    #echo "$@" >>/tmp/clang.options
+    #logger -p user.debug -t "{kds}: ${0##*/}[$$]" -- "$@" 2>/dev/null || true
+    return
+}
+
+# Environment veriables
+# BR2_CONFIG=/pub/kds/work/cheri/buildroot/musl/.config
+# HOST_DIR=/pub/kds/work/cheri/buildroot/musl/host
+# STAGING_DIR=/pub/kds/work/cheri/buildroot/musl/host/mips64-buildroot-linux-musl/sysroot
+# BASE_DIR=/pub/kds/work/cheri/buildroot/musl
+# TARGET_DIR=/pub/kds/work/cheri/buildroot/musl/target
+
+#HOST_DIR=/pub/kds/work/cheri/buildroot/mips64/host
+
+TARGET_CC=${0##*/}
+TARGET_TOOL=${TARGET_CC##*-}
+TARGET_ARCH=${TARGET_CC%%-*}
+TARGET_CROSS=${TARGET_CC%-*}
+
+#echo $TARGET_ARCH $TARGET_CROSS $TARGET_TOOL
+#exit 0
+
+CLANG_INC=$HOST_DIR/cheri/lib/clang/13.0.0/include
+LINUX_INC=$STAGING_DIR/usr/include
+LIBC_INC=$STAGING_DIR/cheri/usr/include
+
+INCLUDE="-idirafter $LIBC_INC -idirafter $LINUX_INC -idirafter $CLANG_INC"
+
+CC="$HOST_DIR/cheri/bin/$TARGET_TOOL"
+
+CCARGS="-B$HOST_DIR/cheri/bin -fuse-ld=$TARGET_CROSS"
+
+case "$TARGET_ARCH" in
+riscv64)
+	CCARGS="$CCARGS --target=riscv64-linux-gnu"
+	CCARGS="$CCARGS -march=rv64imafdc -mabi=lp64d -mno-relax"
+	CFLAGS="$CFLAGS -Wno-error=unused-command-line-argument"
+	;;
+riscv64cheri)
+	CCARGS="$CCARGS --target=riscv64-linux-gnu"
+	CCARGS="$CCARGS -march=rv64imafdcxcheri -mabi=l64pc128d -mno-relax"
+	CFLAGS="$CFLAGS -Wno-error=unused-command-line-argument"
+	;;
+*)
+        echo "Unknown architecture"
+        exit 1
+        ;;
+esac
+
+TARGET_SHARED=0
+TARGET_NOSTDLIB=0
+TARGET_RELOCATABLE=0
+
+for x ; do
+	case "$x" in
+	-shared)
+		msg SHARED
+		TARGET_SHARED=1
+		;;
+	-nostdlib)
+		msg NOSTDLIB
+		TARGET_NOSTDLIB=1
+		;;
+	-r)
+		msg RELOCATABLE
+		TARGET_RELOCATABLE=1
+		;;
+	esac
+done
+
+export TARGET_SHARED TARGET_NOSTDLIB TARGET_RELOCATABLE
+
+msg ARGS $0 $TARGET_ARCH $TARGET_CC $TARGET_CROSS
+
+SYSROOT="--sysroot $STAGING_DIR/cheri -isystem $STAGING_DIR/cheri/include -L$STAGING_DIR/cheri/lib"
+
+CCARGS="$CCARGS $CFLAGS $INCLUDE $SYSROOT"
+
+msg COMPILE $CC "$@" $CCARGS
+
+exec $CC "$@" $CCARGS

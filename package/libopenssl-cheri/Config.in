@@ -1,0 +1,3 @@
+config BR2_PACKAGE_LIBOPENSSL_CHERI
+	bool "libopenssl-cheri"
+	depends on BR2_PACKAGE_MUSL_CHERI

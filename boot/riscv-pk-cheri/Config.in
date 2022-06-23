@@ -1,0 +1,16 @@
+config BR2_TARGET_RISCV_PK_CHERI
+	bool "riscv proxy kernel"
+	depends on BR2_riscv
+
+if BR2_TARGET_RISCV_PK_CHERI
+choice
+	prompt "riscv-pk target"
+	default BR2_TARGET_RISCV_PK_CHERI_QEMU
+
+config BR2_TARGET_RISCV_PK_CHERI_QEMU
+	bool "riscv-pk for qemu"
+
+config BR2_TARGET_RISCV_PK_CHERI_GFE
+	bool "riscv-pk for gfe"
+endchoice
+endif

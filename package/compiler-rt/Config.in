@@ -1,0 +1,7 @@
+config BR2_PACKAGE_COMPILER_RT
+	bool "llvm-project compiler runtime"
+	default n
+	select BR2_PACKAGE_MUSL_CHERI_HEADERS
+	help
+	  LLVM Project compiler runtime.
+

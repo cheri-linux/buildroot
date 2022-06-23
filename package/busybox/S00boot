@@ -1,0 +1,33 @@
+#!/bin/sh
+
+start() {
+	printf 'Starting %s: ' "$0"
+	mkdir -p /home
+	mkdir -p /cheri/dev /cheri/proc /cheri/sys
+	# this is for chroot /cheri
+	mount --bind /dev /cheri/dev
+	mount --bind /proc /cheri/proc
+	mount --bind /sys /cheri/sys
+	ln -sf /lib/libc.so /cheri/lib/ld-musl-riscv64cheri-clang.so.1
+}
+
+stop() {
+	printf 'Stopping %s: ' "$0"
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+	start|stop|restart)
+		"$1";;
+	reload)
+		# Restart, since there is no true "reload" feature.
+		restart;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac

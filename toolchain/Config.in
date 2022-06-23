@@ -69,6 +69,9 @@ source "toolchain/toolchain-external/Config.in"
 # so put it here instead
 source "package/gdb/Config.in.host"
 
+# cheri gdb
+source "package/gdb-cheri/Config.in.host"
+
 comment "Toolchain Generic Options"
 
 # https://sourceware.org/bugzilla/show_bug.cgi?id=19615

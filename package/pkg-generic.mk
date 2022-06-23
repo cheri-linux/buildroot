@@ -557,6 +557,12 @@ ifndef $(2)_SITE_METHOD
  endif
 endif
 
+ifndef $(2)_GIT_SUBMODULES
+ ifdef $(3)_GIT_SUBMODULES
+  $(2)_GIT_SUBMODULES = $$($(3)_GIT_SUBMODULES)
+ endif
+endif
+
 ifndef $(2)_DL_OPTS
  ifdef $(3)_DL_OPTS
   $(2)_DL_OPTS = $$($(3)_DL_OPTS)

@@ -3,6 +3,8 @@
 # sshd        Starts sshd.
 #
 
+zcat /proc/config.gz | grep -q "CHERI_PURECAP=y" && exit 0
+
 # Make sure the ssh-keygen progam exists
 [ -f /usr/bin/ssh-keygen ] || exit 0
 

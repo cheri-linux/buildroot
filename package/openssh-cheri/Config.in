@@ -1,0 +1,12 @@
+config BR2_PACKAGE_OPENSSH_CHERI
+	bool "openssh-cheri"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_MUSL_CHERI
+	select BR2_PACKAGE_OPENSSL_CHERI
+	select BR2_PACKAGE_ZLIB_CHERI
+	help
+	  A free version of the SSH protocol suite of network
+	  connectivity tools. The standard 'ssh', 'sshd', 'scp', and
+	  friends.
+
+	  http://www.openssh.com/

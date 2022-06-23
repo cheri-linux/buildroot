@@ -1,0 +1,101 @@
+#!/bin/bash
+
+#env >>/tmp/lld-env.txt
+
+# Environment veriables
+# BR2_CONFIG=/pub/kds/work/cheri/buildroot/musl/.config
+# HOST_DIR=/pub/kds/work/cheri/buildroot/musl/host
+# STAGING_DIR=/pub/kds/work/cheri/buildroot/musl/host/mips64-buildroot-linux-musl/sysroot
+# BASE_DIR=/pub/kds/work/cheri/buildroot/musl
+# TARGET_DIR=/pub/kds/work/cheri/buildroot/musl/target
+
+msg() {
+    #echo "$@" >&2
+    #echo "$@" >>/tmp/lld.options
+    #logger -p user.debug -t "{kds}: ${0##*/}[$$]" -- "$@" 2>/dev/null || true
+    return
+}
+
+TARGET_CROSS=${0##*/ld.}
+TARGET_ARCH=${TARGET_CROSS%%-*}
+
+#msg $TARGET_ARCH $TARGET_CROSS
+
+cc=$HOST_DIR/cheri/bin/clang
+LINKER=$($cc -print-prog-name=ld.lld)
+
+case "$TARGET_ARCH" in
+riscv64)
+	ARCH=riscv64
+	ldso="/lib/ld-musl-riscv64-clang.so.1"
+	;;
+riscv64cheri)
+	ARCH=riscv64
+	ldso="/lib/ld-musl-riscv64cheri-clang.so.1"
+	;;
+*)
+        echo "Unknown architecture"
+        exit 1
+        ;;
+esac
+
+cleared=0
+
+libc_lib=$STAGING_DIR/cheri/lib
+
+msg "<<<<<<<<<<<<<<<<<<<<"
+msg "$@"
+msg ">>>>>>>>>>>>>>>>>>>>"
+
+for x ; do
+	if [ $cleared -eq 0 ]; then
+		cleared=1
+		# set initial values
+		set -- "$LINKER" "-nostdlib" -v
+	fi
+	skip=0
+	case "$x" in
+	crtbegin*.o|crtend*.o)
+		#set -- "$@" $($cc -print-file-name=$x)
+		msg "OPTION REMOVED: $x"
+		skip=1
+		;;
+	Scrt*.o|crt*.o|-lc)
+		msg "OPTION PRESENT: $x"
+		;;
+	-lgcc)
+		msg "OPTION REPLACED: $x"
+		set -- "$@" -lclang_rt.builtins-$ARCH
+		skip=1
+		;;
+	-lgcc_eh|-lgcc_s|-lclang_rt.builtins-cheri)
+		msg "OPTION REMOVED: $x"
+		#set -- "$@" $($cc -print-file-name=$file)
+		skip=1
+		;;
+	-lm|-lresolv|-latomic|-Bstatic)
+		msg "OPTION REMOVED: $x"
+		skip=1
+		;;
+	esac
+	if [ $skip -eq 0 ]; then
+		#msg "OPTION KEPT: $x"
+		set -- "$@" "$x"
+	fi
+done
+
+if [ $TARGET_RELOCATABLE -eq 0 -a $TARGET_SHARED -eq 0 -a $TARGET_NOSTDLIB -eq 0 ]; then
+	msg STDLIB
+	set -- "$@" -dynamic-linker $ldso
+	set -- "$@" -rpath=/cheri/lib
+	set -- "$@" -rpath=/cheri/usr/lib
+fi
+
+msg LINK "$@"
+msg "++++++++++++++++++++"
+
+"$@"
+RET=$?
+msg RET: $RET
+exit $RET
+

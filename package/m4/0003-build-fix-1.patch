@@ -1,0 +1,20 @@
+diff -Naur host-m4-1.4.18.orig/lib/c-stack.c host-m4-1.4.18/lib/c-stack.c
+--- host-m4-1.4.18.orig/lib/c-stack.c	2016-12-31 15:54:41.000000000 +0200
++++ host-m4-1.4.18/lib/c-stack.c	2021-11-23 14:07:10.604411297 +0200
+@@ -52,13 +52,15 @@
+ #endif
+ #ifndef SIGSTKSZ
+ # define SIGSTKSZ 16384
+-#elif HAVE_LIBSIGSEGV && SIGSTKSZ < 16384
++#elif HAVE_LIBSIGSEGV
++#if SIGSTKSZ < 16384
+ /* libsigsegv 2.6 through 2.8 have a bug where some architectures use
+    more than the Linux default of an 8k alternate stack when deciding
+    if a fault was caused by stack overflow.  */
+ # undef SIGSTKSZ
+ # define SIGSTKSZ 16384
+ #endif
++#endif
+ 
+ #include <stdlib.h>
+ #include <string.h>

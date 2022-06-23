@@ -1,0 +1,26 @@
+From f60d52ad73dd4a6e6f06660c2ed14dedece2b611 Mon Sep 17 00:00:00 2001
+From: Dmitry Kasatkin <dmitry.kasatkin@huawei.com>
+Date: Tue, 9 Nov 2021 12:35:29 +0200
+Subject: [PATCH] build fix
+
+---
+ gdb/nat/amd64-linux-siginfo.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gdb/nat/amd64-linux-siginfo.c b/gdb/nat/amd64-linux-siginfo.c
+index dab52684ad..9cb4d98414 100644
+--- a/gdb/nat/amd64-linux-siginfo.c
++++ b/gdb/nat/amd64-linux-siginfo.c
+@@ -17,8 +17,8 @@
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+ 
+-#include <signal.h>
+ #include "common/common-defs.h"
++#include <signal.h>
+ #include "amd64-linux-siginfo.h"
+ 
+ #define GDB_SI_SIZE 128
+-- 
+2.34.1
+

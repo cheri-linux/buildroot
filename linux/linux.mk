@@ -132,12 +132,23 @@ endif
 
 # We don't want to run depmod after installing the kernel. It's done in a
 # target-finalize hook, to encompass modules installed by packages.
+ifeq ($(BR2_LINUX_KERNEL_CLANG),y)
+LINUX_MAKE_FLAGS = \
+	HOSTCC="$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS)" \
+	ARCH=$(KERNEL_ARCH) \
+	INSTALL_MOD_PATH=$(TARGET_DIR) \
+	CROSS_COMPILE="$(TARGET_CROSS)" \
+	CC="$(HOST_DIR)/cheri/bin/clang" \
+	LLVM=1 \
+	DEPMOD=$(HOST_DIR)/sbin/depmod
+else
 LINUX_MAKE_FLAGS = \
 	HOSTCC="$(HOSTCC) $(HOST_CFLAGS) $(HOST_LDFLAGS)" \
 	ARCH=$(KERNEL_ARCH) \
 	INSTALL_MOD_PATH=$(TARGET_DIR) \
 	CROSS_COMPILE="$(TARGET_CROSS)" \
 	DEPMOD=$(HOST_DIR)/sbin/depmod
+endif
 
 ifeq ($(BR2_REPRODUCIBLE),y)
 LINUX_MAKE_ENV += \
@@ -153,9 +164,9 @@ endif
 # abusing those aliases for system call entry points, in order to
 # sanitize the arguments passed from user space in registers.
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=82435
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_8),y)
-LINUX_MAKE_ENV += KCFLAGS=-Wno-attribute-alias
-endif
+#ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_8),y)
+#LINUX_MAKE_ENV += KCFLAGS=-Wno-attribute-alias
+#endif
 
 ifeq ($(BR2_LINUX_KERNEL_DTB_OVERLAY_SUPPORT),y)
 LINUX_MAKE_ENV += DTC_FLAGS=-@

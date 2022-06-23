@@ -13,6 +13,13 @@
 # not configure it.  This should allow the same build to be disk/flash
 # booted or NFS booted.
 
+# CHERI FIXME
+# following sed is crashing on CHERI, so use workaround for now
+if grep -q "ip=" /proc/cmdline; then
+	echo "Skipping $IFACE, configured by device tree"
+	exit 1
+fi
+
 nfsip=`sed -n '/^[^ ]*:.* \/ nfs.*[ ,]addr=\([0-9.]\+\).*/s//\1/p' /proc/mounts`
 if [ -n "$nfsip" ] && ip route get to "$nfsip" | grep -q "dev $IFACE"; then
 	echo Skipping $IFACE, used for NFS from $nfsip

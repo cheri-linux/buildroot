@@ -283,13 +283,19 @@ endif
 ifndef HOSTCC
 HOSTCC := gcc
 HOSTCC := $(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
+HOSTCC_CLANG := clang
+HOSTCC_CLANG := $(shell which $(HOSTCC_CLANG) || type -p $(HOSTCC_CLANG) || echo clang)
 endif
 HOSTCC_NOCCACHE := $(HOSTCC)
+HOSTCC_CLANG_NOCCACHE := $(HOSTCC_CLANG)
 ifndef HOSTCXX
 HOSTCXX := g++
 HOSTCXX := $(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
+HOSTCXX_CLANG := clang++
+HOSTCXX_CLANG := $(shell which $(HOSTCXX_CLANG) || type -p $(HOSTCXX_CLANG) || echo clang++)
 endif
 HOSTCXX_NOCCACHE := $(HOSTCXX)
+HOSTCXX_CLANG_NOCCACHE := $(HOSTCXX_CLANG)
 ifndef HOSTCPP
 HOSTCPP := cpp
 endif
@@ -320,6 +326,7 @@ SED := $(shell which sed || type -p sed) -i -e
 
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
+export HOSTCC_CLANG HOSTCXX_CLANG HOSTCC_CLANG_NOCCACHE HOSTCXX_CLANG_NOCCACHE
 
 # Determine the userland we are running on.
 #
@@ -485,6 +492,8 @@ BR_CACHE_DIR ?= $(call qstrip,$(BR2_CCACHE_DIR))
 export BR_CACHE_DIR
 HOSTCC = $(CCACHE) $(HOSTCC_NOCCACHE)
 HOSTCXX = $(CCACHE) $(HOSTCXX_NOCCACHE)
+HOSTCC_CLANG = $(CCACHE) $(HOSTCC_CLANG_NOCCACHE)
+HOSTCXX_CLANG = $(CCACHE) $(HOSTCXX_CLANG_NOCCACHE)
 else
 export BR_NO_CCACHE
 endif
@@ -1233,5 +1242,12 @@ include docs/manual/manual.mk
 -include $(foreach dir,$(BR2_EXTERNAL_DIRS),$(sort $(wildcard $(dir)/docs/*/*.mk)))
 
 .PHONY: $(noconfig_targets)
+
+run:
+ifeq ($(BR2_riscv),y)
+	$(TOPDIR)/build/run128_riscv.sh $(O)
+else
+	$(TOPDIR)/build/run128.sh -gdb2 $(O)
+endif
 
 endif #umask / $(CURDIR) / $(O)
