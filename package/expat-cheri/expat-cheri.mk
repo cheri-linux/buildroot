@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EXPAT_CHERI_VERSION = 2.4.1
+EXPAT_CHERI_VERSION = 2.4.8
 EXPAT_CHERI_SITE = http://downloads.sourceforge.net/project/expat/expat/$(EXPAT_CHERI_VERSION)
 EXPAT_CHERI_SOURCE = expat-$(EXPAT_CHERI_VERSION).tar.xz
 EXPAT_CHERI_INSTALL_STAGING = YES
