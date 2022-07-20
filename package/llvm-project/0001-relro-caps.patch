@@ -1,0 +1,29 @@
+From d9589414e4fa427cdd1fa31e8ef03a317b3479e1 Mon Sep 17 00:00:00 2001
+From: Julian Horsch <julian.horsch@aisec.fraunhofer.de>
+Date: Tue, 9 Mar 2021 13:21:09 +0100
+Subject: [PATCH] LDD: Don't create RO caps for RELRO symbols
+
+---
+ lld/ELF/Arch/Cheri.cpp | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/lld/ELF/Arch/Cheri.cpp b/lld/ELF/Arch/Cheri.cpp
+index fea95cfb17c5..81252d99833f 100644
+--- a/lld/ELF/Arch/Cheri.cpp
++++ b/lld/ELF/Arch/Cheri.cpp
+@@ -551,7 +551,13 @@ template <class ELFT> void CheriCapRelocsSection<ELFT>::writeTo(uint8_t *buf) {
+     } else if (auto os = reloc.target.sym()->getOutputSection()) {
+       assert(!reloc.target.sym()->isTls());
+       // if ((OS->getPhdrFlags() & PF_W) == 0) {
+-      if (((os->flags & SHF_WRITE) == 0) || isRelroSection(os)) {
++      /* When linking code that is itself responsible for initializing RELRO
++       * sections, i.e. the dynamic linker itself, making caps to RELRO symbols
++       * read-only leads to problems, since those symbols cannot be initialized.
++       * Hence, we omit making RELRO symbols RO here and rely on the dynamic
++       * linker setting RO page permissions for RELRO sections to enforce RO. */
++      //if (((os->flags & SHF_WRITE) == 0) || isRelroSection(os)) {
++      if (((os->flags & SHF_WRITE) == 0)) {
+         permissions |= CaptablePermissions<ELFT>::readOnly;
+       } else if (os->flags & SHF_EXECINSTR) {
+         warn("Non-function __cap_reloc against symbol in section with "
+-- 
